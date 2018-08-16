@@ -10,11 +10,13 @@ contract Campaign {
     uint public contributorsCount; // How many contributors are there.  Less important than totalContributions, but still interesting.
     uint public requestDaysDeadline; // Set by the manager when first creating the campaign.  It's known to contributors when they contribute.
 
+    // Requests are considered approved if complete === true && overNoLimit === false.  Denied if overNoLimit === true.
     struct Request {
         string description; // Description of the request.  This cannot be changed later, which prevents bait-and-switch.
         uint value; // Quantity of funds requested for distribution.
         address recipient; // Address of intended recipient of the funds.
         bool complete; // Whether this request is complete.
+        bool overNoLimit; // Are there no votes from addresses accounting for >= 15% of the total contributions?
         string databaseKey; // Location of other request-specific assets like images, videos, etc.
         mapping(address => uint) contributorsSnapshot; // Snapshot of contributors at the time the request is made.
         uint totalContributionsSnapshot; // Snapshot of total contributions at the time the request is made.
@@ -24,6 +26,13 @@ contract Campaign {
     }
     
     Request[] public requests; // Array of requests.
+
+
+    // Modifier that restricts the function to only be callable from the manager's address
+    modifier restricted() {
+        require(msg.sender == manager); // Rejects the function if message sender isn't the manager
+        _; // Replaced by the actual function body when the modifier is used.
+    }
 
     /**
       * @title Initialize the campaign and set total contributions to 0.
@@ -74,6 +83,7 @@ contract Campaign {
            value: value,
            recipient: recipient,
            complete: false,
+           overNoLimit: false, // Initialize at false as request isn't over the 15% limit when it's initialized.
            databaseKey: databaseKey,
            contributorsSnapshot: contributors, // Can't loop through this because it's a mapping, but can use it to prevent address from voting no more than once.
            totalContributionsSnapshot: totalContributions,
@@ -88,11 +98,12 @@ contract Campaign {
     /**
       * @title Vote no for a particular request
       	@dev Requests requires no more than 15% of contributors (by % of total contribution) to vote against it for approval.
+      	@dev Requests will be denied if this no vote pushes it over the 15% limit.
       * @param index of the particular request where contributor is voting 'no'.
       * @public can call this function external to this contract.
     */
     function voteNo(uint index) public {
-        Request storage request = requests[index]; // Use storage keyword because we want to change the contract's state.
+        Request storage request = requests[index]; // Use storage keyword because we want to change the request's state.
         
         require(request.contributorsSnapshot[msg.sender]); // Check to see if the sender was a contributor to the campaign at the time the request was made.  Prevent them from voting if they were not.
         require(request.createdTimestamp > now - 1000 * 60 * 60 * 24 * requestDaysDeadline ); // Prevents voting if 'now' is more than 5 days from the request creation timestamp.
@@ -102,6 +113,31 @@ contract Campaign {
         // Increase the no vote contribution total by the amount of wei/eth that the sender address has contributed at the time of the snapshot (when the request was made).
         // Request will be denied if the # of noVoteContributionTotal / totalContributionsSnapshot >= 0.15.
         request.noVoteContributionTotal += request.contributorsSnapshot[msg.sender];
+
+        // Reject the request if this no vote pushes it over the limit
+        if ((request.noVoteContributionTotal / request.totalContributionsSnapshot) >= 0.15) {
+        	request.overNoLimit = true;
+        	request.complete = true;
+        }
+    }
+
+    /**
+      * @title Finalize the request at index
+      * @dev require that request isn't over the 15% no vote limit and that it hasn't been completed previously.
+      * @dev can't finalize request if it's not yet past the request days deadline.
+      * @param index of the particular request.
+      * @public can call this function external to this contract.
+      * @restricted only the manager cqn finalize the request
+    */
+    function finalizeRequest(uint index) public restricted {
+        Request storage request = requests[index]; // Use storage keyword because we want to change the request's state.
+        
+        require(!request.overNoLimit);
+        require(!request.complete);
+        require(request.createdTimestamp <= now - 1000 * 60 * 60 * 24 * requestDaysDeadline ); // Prevent finalizing request if haven't reached the request days deadline.
+        
+        request.recipient.transfer(request.value); // Transfer the request total to the recipient address defined when creating the request.
+        request.complete = true;
     }
 
 }
