@@ -1,5 +1,7 @@
 #Design Patterns#
 
+-   Use of a factory vs. calling Campaign contract directly
+
 -   Voting on requests based on total contribution rather than each address getting 1 vote
 
 -   Storing request description and recipient address on the blockchain and not allowing alterations.

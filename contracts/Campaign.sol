@@ -1,14 +1,48 @@
 pragma solidity ^0.4.24;
 
+/** @title Campaign Factory 
+  * @dev this factory will manage all of the campaigns and make it easy to get an array of deployed campaigns.
+*/
+contract CampaignFactory {
+    // Array of deployed campaign addresses
+    address[] public deployedCampaigns;
+    
+    /** @title Creates a new campaign and stores its deployed address in the deployedCampaigns array.
+    	@dev send msg.sender into new Campaign because won't have access to msg.sender otherwise.  msg.sender in the Campaign contract will be the address of Campaign Factory.
+      * @param minimum amount necessary for contribution
+      * @param databaseKey key used to identify this campaign in centralized database / IPFS
+      * @public function is accessible outside of this contract
+    */
+    function createCampaign(uint minimum, string databaseKey, uint requestDays) public {
+        address newCampaign = new Campaign(minimum, msg.sender, databaseKey, requestDays);
+        deployedCampaigns.push(newCampaign);
+    }
+    
+    /** @dev Get all deployed campaigns
+      * @returns address[] array of deployed campaign addresses
+      * @public function is accessible outside of this contract
+      * @view Does not modify the blockchain
+    */
+    function getDeployedCampaigns() public view returns(address[]) {
+        return deployedCampaigns;
+    }
+}
+
 /// @title Fundraising campaign where contributors vote on use of funds.
 contract Campaign {
     address public manager; // Owner/creator of the campaign.
     uint public minimumContribution; // Minimum amount of wei contributor must contribute to the campaign.
     string public infoKey; // Database/IPFS key (not 100% sure how going to use this yet).
-    mapping(address => uint) public contributors; // Address of each approver and how much [uint] each has contributed.
+    mapping(address => uint) public contributors; // Address of each approver and how much wei/eth each has contributed.
+    address[] public contributorAddresses;
     uint public totalContributions; // Track total contributions, which will differ from this.balance if funds are distributed.
     uint public contributorsCount; // How many contributors are there.  Less important than totalContributions, but still interesting.
     uint public requestDaysDeadline; // Set by the manager when first creating the campaign.  It's known to contributors when they contribute.
+
+    struct Contributor {
+        address contributorAddress; 
+        uint weight;
+    }
 
     // Requests are considered approved if complete === true && overNoLimit === false.  Denied if overNoLimit === true.
     struct Request {
@@ -27,7 +61,6 @@ contract Campaign {
     
     Request[] public requests; // Array of requests.
 
-
     // Modifier that restricts the function to only be callable from the manager's address
     modifier restricted() {
         require(msg.sender == manager); // Rejects the function if message sender isn't the manager
@@ -42,12 +75,12 @@ contract Campaign {
 	  * @param requestDaysDeadline is set by the manager when first creating the campaign and is known to contributors when they contribute.
 	  * @public can call this function external to this contract
     */
-    function Campaign(uint minimum, address creator, string databaseKey, uint requestDaysDeadline) public {
+    function Campaign(uint minimum, address creator, string databaseKey, uint requestDays) public {
         manager = creator;
         minimumContribution = minimum;
         infoKey = databaseKey;
         totalContributions = 0;
-        requestDaysDeadline = requestDaysDeadline;
+        requestDaysDeadline = requestDays;
     }
 
     /**
@@ -58,11 +91,14 @@ contract Campaign {
     */
     function contribute(uint amount) public payable {
         require(msg.value > minimumContribution);
-        
-        contributors[msg.sender] = contributors[msg.sender] || 0; // Handles case where contributor has previously contributed.  Adds this contribution to any existing contribution.
+       
         contributors[msg.sender] += amount; // Tracks how much each 'approver' has contributed.
         totalContributions += amount;
-        contributorsCount++;
+       
+       	// Increment contributor count only if this is the sender's first contribution. 
+        if (contributors[msg.sender] === amount) {
+        	contributorsCount++;	
+        }  
     }
 
     /**
@@ -88,8 +124,8 @@ contract Campaign {
            contributorsSnapshot: contributors, // Can't loop through this because it's a mapping, but can use it to prevent address from voting no more than once.
            totalContributionsSnapshot: totalContributions,
            noVoteContributionTotal: 0, // No contributors have voted against the request yet.
-           // Using .timestamp here even though it can be manipulated slightly by miners because we want to prevent voting after ~5 days.  
-           // Accuracy not that important and it's easier (and more accurage) to estimate timestamp than block number.
+           /** Using .timestamp here even though it can be manipulated slightly by miners because we want to prevent voting after ~5 days.  
+               Accuracy not that important and it's easier (and more accurage) to estimate timestamp than block number. */
            createdTimestamp: block.timestamp 
         });
         requests.push(newRequest);
