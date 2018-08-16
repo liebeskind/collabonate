@@ -8,6 +8,7 @@ contract Campaign {
     mapping(address => uint) public contributors; // Address of each approver and how much [uint] each has contributed.
     uint public totalContributions; // Track total contributions, which will differ from this.balance if funds are distributed.
     uint public contributorsCount; // How many contributors are there.  Less important than totalContributions, but still interesting.
+    uint public requestDaysDeadline; // Set by the manager when first creating the campaign.  It's known to contributors when they contribute.
 
     struct Request {
         string description; // Description of the request.  This cannot be changed later, which prevents bait-and-switch.
@@ -29,13 +30,15 @@ contract Campaign {
       * @param minimum min amount contributor can contribute to this campaign.
       * @param creator address of the person creating the campaign.  Necessary because when using a factory, can't pull msg.sender directly.
 	  * @param databseKey key that connects this campaign to external resource.  Probably IPFS for content storage.
+	  * @param requestDaysDeadline is set by the manager when first creating the campaign and is known to contributors when they contribute.
 	  * @public can call this function external to this contract
     */
-    function Campaign(uint minimum, address creator, string databaseKey) public {
+    function Campaign(uint minimum, address creator, string databaseKey, uint requestDaysDeadline) public {
         manager = creator;
         minimumContribution = minimum;
         infoKey = databaseKey;
         totalContributions = 0;
+        requestDaysDeadline = requestDaysDeadline;
     }
 
     /**
@@ -92,7 +95,7 @@ contract Campaign {
         Request storage request = requests[index]; // Use storage keyword because we want to change the contract's state.
         
         require(request.contributorsSnapshot[msg.sender]); // Check to see if the sender was a contributor to the campaign at the time the request was made.  Prevent them from voting if they were not.
-        require(request.createdTimestamp > now - 1000 * 60 * 60 * 24 * 5 ); // Prevents voting if 'now' is more than 5 days from the request creation timestamp.
+        require(request.createdTimestamp > now - 1000 * 60 * 60 * 24 * requestDaysDeadline ); // Prevents voting if 'now' is more than 5 days from the request creation timestamp.
         require(!request.noVotes[msg.sender]); //Can't vote twice or change vote.
         
         request.noVotes[msg.sender] = true; // Prevents contributor from voting more than once.
