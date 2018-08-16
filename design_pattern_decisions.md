@@ -14,4 +14,8 @@
 
 -   Mapping of accounts that have voted no against a particular request
 
+-   Having campaign contributor finalize request vs. having funds transfer automatically at the end of 5 days
+
+-   Using block.timestamp vs. block.number for estimating time elapsed in request
+
 -   Emergency stop

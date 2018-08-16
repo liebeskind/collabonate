@@ -19,6 +19,7 @@ contract Campaign {
         uint totalContributionsSnapshot; // Snapshot of total contributions at the time the request is made.
         uint noVoteContributionTotal; // Sum of no-votes.  Request is denied if noVoteContributionTotal >= 15% of totalContributionsSnapshot.
         mapping(address => bool) noVotes; // Which contributors have voted against a request.  Can't vote against a request more than once per address.
+    	uint createdTimestamp; // Used to calculate the cutoff point where contributors can no longer vote no.
     }
     
     Request[] public requests; // Array of requests.
@@ -73,7 +74,10 @@ contract Campaign {
            databaseKey: databaseKey,
            contributorsSnapshot: contributors, // Can't loop through this because it's a mapping, but can use it to prevent address from voting no more than once.
            totalContributionsSnapshot: totalContributions,
-           noVoteContributionTotal: 0 // No contributors have voted against the request yet.
+           noVoteContributionTotal: 0, // No contributors have voted against the request yet.
+           // Using .timestamp here even though it can be manipulated slightly by miners because we want to prevent voting after ~5 days.  
+           // Accuracy not that important and it's easier (and more accurage) to estimate timestamp than block number.
+           createdTimestamp: block.timestamp 
         });
         requests.push(newRequest);
     }
@@ -88,6 +92,7 @@ contract Campaign {
         Request storage request = requests[index]; // Use storage keyword because we want to change the contract's state.
         
         require(request.contributorsSnapshot[msg.sender]); // Check to see if the sender was a contributor to the campaign at the time the request was made.  Prevent them from voting if they were not.
+        require(request.createdTimestamp > now - 1000 * 60 * 60 * 24 * 5 ); // Prevents voting if 'now' is more than 5 days from the request creation timestamp.
         require(!request.noVotes[msg.sender]); //Can't vote twice or change vote.
         
         request.noVotes[msg.sender] = true; // Prevents contributor from voting more than once.

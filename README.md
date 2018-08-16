@@ -19,6 +19,6 @@ Campaign managers can create a campaign with a minimum contribution amount and a
 
 Contributors can contribute to a campaign and send wei/eth to the smart contract. The amount they have contributed and the total contributions are tracked.
 
-Anytime a campaign manager wants to use funds raised in a campaign and held in a Smart Contract, they must submit a request to the campaign contributors (stakeholders). This request includes a proposed use and a destination Ethereum address.
+Anytime a campaign manager wants to use funds raised in a campaign and held in a Smart Contract, they must submit a request to the campaign contributors (stakeholders). This request includes a proposed use and a destination Ethereum address. Contributors have 5 days to 'vote no' against the request.
 
-Contributors can vote against the request and the request is considered ‘denied’ if accounts responsible for 15% of the total contributions vote against it. If the proposed request is not denied, the funds are sent programatically to the destination Ethereum address.
+Contributors can vote against the request and the request is considered ‘denied’ if accounts responsible for 15% of the total contributions at the time the request was made vote against it. If the proposed request is not denied at the end of 5 days, the campaign manager finalize the request and the funds are sent programatically to the destination Ethereum address.
