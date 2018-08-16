@@ -5,9 +5,9 @@ contract Campaign {
     address public manager; // Owner/creator of the campaign.
     uint public minimumContribution; // Minimum amount of wei contributor must contribute to the campaign.
     string public infoKey; // Database/IPFS key (not 100% sure how going to use this yet).
-    mapping(address => uint) public approvers; // Address of each approver and how much [uint] each has contributed.
+    mapping(address => uint) public contributors; // Address of each approver and how much [uint] each has contributed.
     uint public totalContributions; // Track total contributions, which will differ from this.balance if funds are distributed.
-    uint public approversCount; // How many approvers are there.  Less important than totalContributions, but still interesting.
+    uint public contributorsCount; // How many contributors are there.  Less important than totalContributions, but still interesting.
 
     struct Request {
         string description; // Description of the request.  This cannot be changed later, which prevents bait-and-switch.
@@ -15,6 +15,10 @@ contract Campaign {
         address recipient; // Address of intended recipient of the funds.
         bool complete; // Whether this request is complete.
         string databaseKey; // Location of other request-specific assets like images, videos, etc.
+        mapping(address => uint) contributorsSnapshot; // Snapshot of contributors at the time the request is made.
+        uint totalContributionsSnapshot; // Snapshot of total contributions at the time the request is made.
+        uint noVoteContributionTotal; // Sum of no-votes.  Request is denied if noVoteContributionTotal >= 15% of totalContributionsSnapshot.
+        mapping(address => bool) noVotes; // Which contributors have voted against a request.  Can't vote against a request more than once per address.
     }
     
     Request[] public requests; // Array of requests.
@@ -42,10 +46,10 @@ contract Campaign {
     function contribute(uint amount) public payable {
         require(msg.value > minimumContribution);
         
-        approvers[msg.sender] = approvers[msg.sender] || 0; // Handles case where contributor has previously contributed.  Adds this contribution to any existing contribution.
-        approvers[msg.sender] += amount; // Tracks how much each 'approver' has contributed.
+        contributors[msg.sender] = contributors[msg.sender] || 0; // Handles case where contributor has previously contributed.  Adds this contribution to any existing contribution.
+        contributors[msg.sender] += amount; // Tracks how much each 'approver' has contributed.
         totalContributions += amount;
-        approversCount++;
+        contributorsCount++;
     }
 
     /**
@@ -64,8 +68,12 @@ contract Campaign {
            value: value,
            recipient: recipient,
            complete: false,
-           databaseKey: databaseKey
+           databaseKey: databaseKey,
+           contributorsSnapshot: contributors, // Can't loop through this because it's a mapping, but can use it to prevent address from voting no more than once.
+           totalContributionsSnapshot: totalContributions
         });
         requests.push(newRequest);
     }
+
+
 }
