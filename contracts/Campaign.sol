@@ -63,17 +63,37 @@ contract Campaign {
       * @public can call this function external to this contract.
     */
     function createRequest(string description, uint value, address recipient, string databaseKey) public restricted {
-        Request memory newRequest = Request({
+        // Initialized with memory keyword because don't need to store this beyond this function.
+        // Push newRequest into requests array, where it will be stored long-term.
+        Request memory newRequest = Request({ 
            description: description,
            value: value,
            recipient: recipient,
            complete: false,
            databaseKey: databaseKey,
            contributorsSnapshot: contributors, // Can't loop through this because it's a mapping, but can use it to prevent address from voting no more than once.
-           totalContributionsSnapshot: totalContributions
+           totalContributionsSnapshot: totalContributions,
+           noVoteContributionTotal: 0 // No contributors have voted against the request yet.
         });
         requests.push(newRequest);
     }
 
+    /**
+      * @title Vote no for a particular request
+      	@dev Requests requires no more than 15% of contributors (by % of total contribution) to vote against it for approval.
+      * @param index of the particular request where contributor is voting 'no'.
+      * @public can call this function external to this contract.
+    */
+    function voteNo(uint index) public {
+        Request storage request = requests[index]; // Use storage keyword because we want to change the contract's state.
+        
+        require(request.contributorsSnapshot[msg.sender]); // Check to see if the sender was a contributor to the campaign at the time the request was made.  Prevent them from voting if they were not.
+        require(!request.noVotes[msg.sender]); //Can't vote twice or change vote.
+        
+        request.noVotes[msg.sender] = true; // Prevents contributor from voting more than once.
+        // Increase the no vote contribution total by the amount of wei/eth that the sender address has contributed at the time of the snapshot (when the request was made).
+        // Request will be denied if the # of noVoteContributionTotal / totalContributionsSnapshot >= 0.15.
+        request.noVoteContributionTotal += request.contributorsSnapshot[msg.sender];
+    }
 
 }

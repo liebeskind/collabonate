@@ -8,6 +8,8 @@
 
 -   Storing contributorsSnapshot as a mapping, which can't be looped through. Prevents address from voting 'no' more than once per request
 
+-   Use require statement to prevent contributor from voting more than once per request or from changing vote.
+
 -   Approve / deny requests based on % of no-votes rather than yes-votes
 
 -   Mapping of accounts that have voted no against a particular request
