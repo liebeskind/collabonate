@@ -15,8 +15,10 @@ Crowdfunding platforms like GofundMe, Kickstarter or IndieGogo are often not an 
 In traditional crowdfunding platforms, contributors need to trust campaign organizers to use the funds responsibly once the goal is met and the funds are released. In many cases, the funds are mismanaged or aren’t used for the stated purpose, but the contributors retain no control and can’t communicate with or offer advice to the campaign organizers. Due to this risk, campaign organizers must craft complex campaigns detailing the expected use of funds, which often includes months of preparation, high costs and lots of upfront planning. Once someone contributes to the campaign, they don’t have any ability to influence how the money is used or to give advice to the campaign organizer.
 
 ##User Stories##
-Campaign managers can create a campaign and add it to the Ethereum blockchain.
+Campaign managers can create a campaign with a minimum contribution amount and add it to the Ethereum blockchain.
+
+Contributors can contribute to a campaign and send wei/eth to the smart contract. The amount they have contributed and the total contributions are tracked.
 
 Anytime a campaign manager wants to use funds raised in a campaign and held in a Smart Contract, they must submit a request to the campaign contributors (stakeholders). This request includes a proposed use and a destination Ethereum address.
 
-Contributors can vote against the request and the request is considered ‘denied’ if accounts responsible for 15% of the contributions vote against it. If the proposed request is not denied, the funds are sent programatically to the destination Ethereum address.
+Contributors can vote against the request and the request is considered ‘denied’ if accounts responsible for 15% of the total contributions vote against it. If the proposed request is not denied, the funds are sent programatically to the destination Ethereum address.

@@ -26,7 +26,7 @@ contract Campaign {
     /**
       * @title contribute wei to the campaign.
       * @param amount of wei contributed to the campaign.
-      * @payable 
+      * @payable this function will receive eth/wei.
       * @public can call this function external to this contract
     */
     function contribute(uint amount) public payable {
@@ -37,4 +37,5 @@ contract Campaign {
         totalContributions += amount;
         approversCount++;
     }
+
 }
