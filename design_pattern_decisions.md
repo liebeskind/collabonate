@@ -6,15 +6,15 @@
 
 -   Storing request description and recipient address on the blockchain and not allowing alterations.
 
--   Taking snapshot of contributors and totalContributions when request is made
-
--   Storing contributorsSnapshot as a mapping, which can't be looped through. Prevents address from voting 'no' more than once per request
-
 -   Use require statement to prevent contributor from voting more than once per request or from changing vote.
 
 -   Approve / deny requests based on % of no-votes rather than yes-votes
 
--   Mapping of accounts that have voted no against a particular request
+-   If the number of no votes is ever 15%, request is denied at that moment vs. checking to see at the end of the request timeline
+
+-   Accounts can continue to contribute during a request timeline, then vote no with more eth/wei contributed
+
+-   Mapping of accounts that have 'voted no' against a particular request
 
 -   Having campaign contributor finalize request vs. having funds transfer automatically at the end of 5 days
 

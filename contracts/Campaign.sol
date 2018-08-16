@@ -7,11 +7,10 @@ contract CampaignFactory {
     // Array of deployed campaign addresses
     address[] public deployedCampaigns;
     
-    /** @title Creates a new campaign and stores its deployed address in the deployedCampaigns array.
-    	@dev send msg.sender into new Campaign because won't have access to msg.sender otherwise.  msg.sender in the Campaign contract will be the address of Campaign Factory.
+    /** 
+      *	@dev send msg.sender into new Campaign because won't have access to msg.sender otherwise.  msg.sender in the Campaign contract will be the address of Campaign Factory.
       * @param minimum amount necessary for contribution
       * @param databaseKey key used to identify this campaign in centralized database / IPFS
-      * @public function is accessible outside of this contract
     */
     function createCampaign(uint minimum, string databaseKey, uint requestDays) public {
         address newCampaign = new Campaign(minimum, msg.sender, databaseKey, requestDays);
@@ -19,9 +18,6 @@ contract CampaignFactory {
     }
     
     /** @dev Get all deployed campaigns
-      * @returns address[] array of deployed campaign addresses
-      * @public function is accessible outside of this contract
-      * @view Does not modify the blockchain
     */
     function getDeployedCampaigns() public view returns(address[]) {
         return deployedCampaigns;
@@ -39,11 +35,6 @@ contract Campaign {
     uint public contributorsCount; // How many contributors are there.  Less important than totalContributions, but still interesting.
     uint public requestDaysDeadline; // Set by the manager when first creating the campaign.  It's known to contributors when they contribute.
 
-    struct Contributor {
-        address contributorAddress; 
-        uint weight;
-    }
-
     // Requests are considered approved if complete === true && overNoLimit === false.  Denied if overNoLimit === true.
     struct Request {
         string description; // Description of the request.  This cannot be changed later, which prevents bait-and-switch.
@@ -52,9 +43,7 @@ contract Campaign {
         bool complete; // Whether this request is complete.
         bool overNoLimit; // Are there no votes from addresses accounting for >= 15% of the total contributions?
         string databaseKey; // Location of other request-specific assets like images, videos, etc.
-        mapping(address => uint) contributorsSnapshot; // Snapshot of contributors at the time the request is made.
-        uint totalContributionsSnapshot; // Snapshot of total contributions at the time the request is made.
-        uint noVoteContributionTotal; // Sum of no-votes.  Request is denied if noVoteContributionTotal >= 15% of totalContributionsSnapshot.
+        uint noVoteContributionTotal; // Sum of no-votes.  Request is denied if noVoteContributionTotal is ever >= 15% of totalContributions.
         mapping(address => bool) noVotes; // Which contributors have voted against a request.  Can't vote against a request more than once per address.
     	uint createdTimestamp; // Used to calculate the cutoff point where contributors can no longer vote no.
     }
@@ -68,14 +57,13 @@ contract Campaign {
     }
 
     /**
-      * @title Initialize the campaign and set total contributions to 0.
+      * @dev Initialize the campaign and set total contributions to 0.
       * @param minimum min amount contributor can contribute to this campaign.
       * @param creator address of the person creating the campaign.  Necessary because when using a factory, can't pull msg.sender directly.
-	  * @param databseKey key that connects this campaign to external resource.  Probably IPFS for content storage.
-	  * @param requestDaysDeadline is set by the manager when first creating the campaign and is known to contributors when they contribute.
-	  * @public can call this function external to this contract
+	  * @param databaseKey key that connects this campaign to external resource.  Probably IPFS for content storage.
+	  * @param requestDays is set by the manager when first creating the campaign and is known to contributors when they contribute.
     */
-    function Campaign(uint minimum, address creator, string databaseKey, uint requestDays) public {
+    constructor(uint minimum, address creator, string databaseKey, uint requestDays) public {
         manager = creator;
         minimumContribution = minimum;
         infoKey = databaseKey;
@@ -84,10 +72,7 @@ contract Campaign {
     }
 
     /**
-      * @title Contribute wei to the campaign.
       * @param amount of wei contributed to the campaign.
-      * @payable this function will receive eth/wei.
-      * @public can call this function external to this contract
     */
     function contribute(uint amount) public payable {
         require(msg.value > minimumContribution);
@@ -96,20 +81,17 @@ contract Campaign {
         totalContributions += amount;
        
        	// Increment contributor count only if this is the sender's first contribution. 
-        if (contributors[msg.sender] === amount) {
+        if (contributors[msg.sender] == amount) {
         	contributorsCount++;	
         }  
     }
 
     /**
-      * @title Request for use of funds created by campaign owner.  
-      	@dev The request requires no more than 15% of contributors (by % of total contribution) to vote against it for approval.
+      *	@dev The request requires no more than 15% of contributors (by % of total contribution) to vote against it for approval.
       * @param description of the request.
       * @param value amount of wei/eth the request is asking to be distributed.
       * @param recipient address the funds will automatically be sent to if the request is approved.
       * @param databaseKey for IPFS or other database containing request assets (like images/videos/etc).
-      * @restricted modifier defined above that only allows campaign creator to call this function.
-      * @public can call this function external to this contract.
     */
     function createRequest(string description, uint value, address recipient, string databaseKey) public restricted {
         // Initialized with memory keyword because don't need to store this beyond this function.
@@ -121,8 +103,6 @@ contract Campaign {
            complete: false,
            overNoLimit: false, // Initialize at false as request isn't over the 15% limit when it's initialized.
            databaseKey: databaseKey,
-           contributorsSnapshot: contributors, // Can't loop through this because it's a mapping, but can use it to prevent address from voting no more than once.
-           totalContributionsSnapshot: totalContributions,
            noVoteContributionTotal: 0, // No contributors have voted against the request yet.
            /** Using .timestamp here even though it can be manipulated slightly by miners because we want to prevent voting after ~5 days.  
                Accuracy not that important and it's easier (and more accurage) to estimate timestamp than block number. */
@@ -132,38 +112,33 @@ contract Campaign {
     }
 
     /**
-      * @title Vote no for a particular request
-      	@dev Requests requires no more than 15% of contributors (by % of total contribution) to vote against it for approval.
-      	@dev Requests will be denied if this no vote pushes it over the 15% limit.
+      *	@dev Requests requires no more than 15% of contributors (by % of total contribution) to vote against it for approval.
+      *	@dev Requests will be denied if this no vote pushes it over the 15% limit.
       * @param index of the particular request where contributor is voting 'no'.
-      * @public can call this function external to this contract.
     */
     function voteNo(uint index) public {
         Request storage request = requests[index]; // Use storage keyword because we want to change the request's state.
         
-        require(request.contributorsSnapshot[msg.sender]); // Check to see if the sender was a contributor to the campaign at the time the request was made.  Prevent them from voting if they were not.
+        require(contributors[msg.sender] > 0); // Check to see if the sender is a contributor to the campaign.
         require(request.createdTimestamp > now - 1000 * 60 * 60 * 24 * requestDaysDeadline ); // Prevents voting if 'now' is more than 5 days from the request creation timestamp.
         require(!request.noVotes[msg.sender]); //Can't vote twice or change vote.
         
         request.noVotes[msg.sender] = true; // Prevents contributor from voting more than once.
-        // Increase the no vote contribution total by the amount of wei/eth that the sender address has contributed at the time of the snapshot (when the request was made).
-        // Request will be denied if the # of noVoteContributionTotal / totalContributionsSnapshot >= 0.15.
-        request.noVoteContributionTotal += request.contributorsSnapshot[msg.sender];
+        
+        // Increase the no vote contribution total by the amount of wei/eth that the sender address has contributed.
+        request.noVoteContributionTotal += contributors[msg.sender];
 
         // Reject the request if this no vote pushes it over the limit
-        if ((request.noVoteContributionTotal / request.totalContributionsSnapshot) >= 0.15) {
+        if (100*(request.noVoteContributionTotal / totalContributions) >= 15) {
         	request.overNoLimit = true;
         	request.complete = true;
         }
     }
 
     /**
-      * @title Finalize the request at index
       * @dev require that request isn't over the 15% no vote limit and that it hasn't been completed previously.
       * @dev can't finalize request if it's not yet past the request days deadline.
       * @param index of the particular request.
-      * @public can call this function external to this contract.
-      * @restricted only the manager cqn finalize the request
     */
     function finalizeRequest(uint index) public restricted {
         Request storage request = requests[index]; // Use storage keyword because we want to change the request's state.
