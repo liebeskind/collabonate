@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import SimpleStorageContract from "../build/contracts/SimpleStorage.json";
+import CampaignFactory from "../build/contracts/CampaignFactory.json";
+import Campaign from "../build/contracts/Campaign.json";
 import getWeb3 from "./utils/getWeb3";
 
 import "./css/oswald.css";
