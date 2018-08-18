@@ -9,25 +9,10 @@ contract TestCampaignFactory {
 
   function testItDeploysCampaign() public {
     CampaignFactory campaignFactory = CampaignFactory(DeployedAddresses.CampaignFactory());
-    // simpleStorage.set(89);
+    campaignFactory.createCampaign(1000, "TestKey", 5);
+    address[] memory deployedCampaigns = campaignFactory.getDeployedCampaigns();
 
-    // uint expected = 89;
-
-    // Assert.equal(simpleStorage.get(), expected, "It should store the value 89.");
+    Assert.equal(deployedCampaigns.length, 1, "It should deploy one campaign.");
   }
 
 }
-
-// contract TestCampaign {
-
-//   function testItStoresAValue() public {
-//     SimpleStorage simpleStorage = SimpleStorage(DeployedAddresses.SimpleStorage());
-
-//     simpleStorage.set(89);
-
-//     uint expected = 89;
-
-//     Assert.equal(simpleStorage.get(), expected, "It should store the value 89.");
-//   }
-
-// }

@@ -1,18 +1,27 @@
-var SimpleStorage = artifacts.require("./CampaignFactory.sol");
+var CampaignFactory = artifacts.require("./CampaignFactory.sol");
 
 contract("CampaignFactory", function(accounts) {
-	it("...should store the value 89.", function() {
-		return SimpleStorage.deployed()
+	it("...should deploy one campaign.", function() {
+		return CampaignFactory.deployed()
 			.then(function(instance) {
-				simpleStorageInstance = instance;
+				campaignFactoryInstance = instance;
 
-				return simpleStorageInstance.set(89, { from: accounts[0] });
+				return campaignFactoryInstance.createCampaign(
+					1000,
+					"TestKey",
+					5,
+					{ from: accounts[0] }
+				);
 			})
 			.then(function() {
-				return simpleStorageInstance.get.call();
+				return campaignFactoryInstance.getDeployedCampaigns.call();
 			})
 			.then(function(storedData) {
-				assert.equal(storedData, 89, "The value 89 was not stored.");
+				assert.equal(
+					storedData.length,
+					1,
+					"Did not deploy 1 campaign."
+				);
 			});
 	});
 });
