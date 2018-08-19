@@ -45,4 +45,20 @@ contract("CampaignFactory", function(accounts) {
 				);
 			});
 	});
+	it("...should have deployed contract addresses of type string.", function() {
+		return CampaignFactory.deployed()
+			.then(function(instance) {
+				campaignFactoryInstance = instance;
+			})
+			.then(function() {
+				return campaignFactoryInstance.getDeployedCampaigns.call();
+			})
+			.then(function(storedData) {
+				assert.equal(
+					typeof storedData[0],
+					"string",
+					"Does not store contract addresses as strings."
+				);
+			});
+	});
 });
