@@ -151,4 +151,21 @@ contract Campaign {
         return (request.description, request.value, request.recipient, request.complete, request.overNoLimit, request.databaseKey, request.noVoteContributionTotal, request.createdTimestamp);
     }
 
+    /**
+      * @dev Returns a summary of the campaign
+    */
+    function getSummary() public view returns(
+        uint, uint, uint, uint, address, string, uint
+    ) { // Not changing in data, so 'view'
+        return (
+            minimumContribution,
+            address(this).balance,
+            requests.length,
+            contributorsCount,
+            manager,
+            infoKey,
+            requestDaysDeadline
+        );
+    }
+
 }
