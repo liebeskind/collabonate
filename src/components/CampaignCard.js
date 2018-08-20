@@ -30,32 +30,6 @@ class CampaignCard extends Component {
 		});
 	}
 
-	// componentDidMount() {
-	// 	// const infoKey = this.props.contractInfo.infoKey;
-	// 	// firebase
-	// 	// 	.storage()
-	// 	// 	.ref("campaignImage")
-	// 	// 	.child(infoKey)
-	// 	// 	.getDownloadURL()
-	// 	// 	.then(url => {
-	// 	// 		this.setState({ imageUrl: url });
-	// 	// 	});
-	// 	// firebase
-	// 	// 	.database()
-	// 	// 	.ref("campaignBasicInfo")
-	// 	// 	.child(infoKey)
-	// 	// 	.on("value", snapshot => {
-	// 	// 		const info = snapshot.val();
-	// 	// 		this.setState({
-	// 	// 			campaignTitle: info.campaignTitle,
-	// 	// 			category: info.category,
-	// 	// 			story: info.story,
-	// 	// 			goal: info.goal,
-	// 	// 			whoRaisingFor: info.whoRaisingFor
-	// 	// 		});
-	// 	// 	});
-	// }
-
 	render() {
 		const {
 			balance,
@@ -68,22 +42,6 @@ class CampaignCard extends Component {
 		} = this.props.contractInfo;
 
 		const { web3 } = this.state;
-
-		// const {
-		// 	imageUrl,
-		// 	campaignTitle,
-		// 	category,
-		// 	story,
-		// 	goal,
-		// 	whoRaisingFor
-		// } = this.state;
-
-		// const balanceEther = web3.utils.fromWei(balance, "ether");
-		// const progress = (balanceEther / goal) * 100;
-
-		// const subHeader = whoRaisingFor
-		// 	? `${whoRaisingFor} | ${category}`
-		// 	: category;
 
 		return (
 			<Router>
