@@ -51,7 +51,7 @@ contract Campaign {
       * @param amount of wei contributed to the campaign.
     */
     function contribute(uint amount) public payable {
-        require(msg.value > minimumContribution);
+        require(msg.value >= minimumContribution);
        
         contributors[msg.sender] += amount; // Tracks how much each 'approver' has contributed.
         totalContributions += amount;
