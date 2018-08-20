@@ -108,7 +108,7 @@ class NewBasicInfoForm extends Component {
 					/>
 				</Form.Field>*/}
 				<Button floated="right" loading={this.state.loading} primary>
-					Next
+					Create Campaign
 				</Button>
 			</Form>
 		);

@@ -23,5 +23,11 @@ export default {
 	},
 	campaignCardImage: {
 		maxHeight: "200px !important"
+	},
+	campaignList: {
+		margin: 75
+	},
+	campaignContainer: {
+		margin: 10
 	}
 };

@@ -88,7 +88,7 @@ class CampaignCard extends Component {
 		return (
 			<Router>
 				<Link to={`/campaigns/${address}/`}>
-					<Card>
+					<Card style={styles.campaignContainer}>
 						<Card.Content extra>
 							<span style={styles.floatRight}>
 								<Icon name="gift" />

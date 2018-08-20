@@ -47,59 +47,49 @@ class CampaignNew extends Component {
 	}
 
 	instantiateContract = async () => {
-		/*
-     * SMART CONTRACT EXAMPLE
-     *
-     * Normally these functions would be called in the context of a
-     * state management library, but for convenience I've placed them here.
-     */
-
 		const contract = require("truffle-contract");
-		// const campaign = contract(CampaignContract);
 		const campaignFactory = contract(CampaignFactoryContract);
-		// campaign.setProvider(this.state.web3.currentProvider);
 		campaignFactory.setProvider(this.state.web3.currentProvider);
 
 		this.state.web3.eth.getAccounts(async (error, accounts) => {
 			const campaignFactoryInstance = await campaignFactory.deployed();
-			// const campaignInstance = await campaign.deployed();
-
 			this.setState({ accounts, campaignFactoryInstance });
 		});
 	};
 
 	basicInfoSubmitted = async basicInfo => {
 		this.setState({ basicInfo: basicInfo });
-		try {
-			this.setState({ errorMessage: "" });
-			if (this.state.basicInfoRef) {
-				await this.state.basicInfoRef.update(basicInfo);
-				this.setState({ showingPage: 1 });
-			} else {
-				// const basicInfoRef = await firebase
-				// 	.database()
-				// 	.ref("campaignBasicInfo")
-				// 	.push(basicInfo);
-				// this.setState({ basicInfoRef: basicInfoRef, showingPage: 1 });
-				this.onSubmit();
-			}
-		} catch (err) {
-			console.log(err.message);
-			this.setState({ errorMessage: err.message });
-		}
+		this.onSubmit();
+		// try {
+		// 	this.setState({ errorMessage: "" });
+		// 	if (this.state.basicInfoRef) {
+		// 		await this.state.basicInfoRef.update(basicInfo);
+		// 		this.setState({ showingPage: 1 });
+		// 	} else {
+		// 		// const basicInfoRef = await firebase
+		// 		// 	.database()
+		// 		// 	.ref("campaignBasicInfo")
+		// 		// 	.push(basicInfo);
+		// 		// this.setState({ basicInfoRef: basicInfoRef, showingPage: 1 });
+		// 		this.onSubmit();
+		// 	}
+		// } catch (err) {
+		// 	console.log(err.message);
+		// 	this.setState({ errorMessage: err.message });
+		// }
 	};
 
-	goBack = () => {
-		let toSetPage = this.state.showingPage;
-		toSetPage--;
-		this.setState({ showingPage: toSetPage });
-	};
+	// goBack = () => {
+	// 	let toSetPage = this.state.showingPage;
+	// 	toSetPage--;
+	// 	this.setState({ showingPage: toSetPage });
+	// };
 
-	next = () => {
-		let toSetPage = this.state.showingPage;
-		toSetPage++;
-		this.setState({ showingPage: toSetPage });
-	};
+	// next = () => {
+	// 	let toSetPage = this.state.showingPage;
+	// 	toSetPage++;
+	// 	this.setState({ showingPage: toSetPage });
+	// };
 
 	onSubmit = async story => {
 		const { web3, campaignFactoryInstance, accounts } = this.state;

@@ -5,10 +5,12 @@ import CampaignFactoryContract from "../build/contracts/CampaignFactory.json";
 import CampaignContract from "../build/contracts/Campaign.json";
 
 import getWeb3 from "./utils/getWeb3";
+import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 
 import CampaignCard from "./components/CampaignCard";
 import NewCampaign from "./pages/NewCampaign";
-import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+
+import styles from "./styles/commonStyles";
 
 import "./css/oswald.css";
 import "./css/open-sans.css";
@@ -44,13 +46,6 @@ class App extends Component {
   }
 
   instantiateContract() {
-    /*
-     * SMART CONTRACT EXAMPLE
-     *
-     * Normally these functions would be called in the context of a
-     * state management library, but for convenience I've placed them here.
-     */
-
     const contract = require("truffle-contract");
     let campaign = contract(CampaignContract);
     const campaignFactory = contract(CampaignFactoryContract);
@@ -113,17 +108,19 @@ class App extends Component {
                 </Link>
                 <br />
 
-                <h3>Active Campaigns ({this.state.campaigns.length})</h3>
-                <Card.Group>
-                  {this.state.campaigns.map(contractInfo => {
-                    return (
-                      <CampaignCard
-                        key={contractInfo.address}
-                        contractInfo={contractInfo}
-                      />
-                    );
-                  })}
-                </Card.Group>
+                <div style={styles.campaignList}>
+                  <h3>Active Campaigns ({this.state.campaigns.length})</h3>
+                  <Card.Group>
+                    {this.state.campaigns.map(contractInfo => {
+                      return (
+                        <CampaignCard
+                          key={contractInfo.address}
+                          contractInfo={contractInfo}
+                        />
+                      );
+                    })}
+                  </Card.Group>
+                </div>
               </div>
             </div>
           </main>
