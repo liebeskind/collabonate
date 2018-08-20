@@ -5,10 +5,10 @@ import CampaignFactoryContract from "../build/contracts/CampaignFactory.json";
 import CampaignContract from "../build/contracts/Campaign.json";
 
 import getWeb3 from "./utils/getWeb3";
-import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 
 import CampaignCard from "./components/CampaignCard";
 import NewCampaign from "./pages/NewCampaign";
+import ShowCampaign from "./pages/ShowCampaign";
 
 import styles from "./styles/commonStyles";
 
@@ -22,8 +22,9 @@ class App extends Component {
     super(props);
 
     this.state = {
-      campaigns: [],
-      web3: null
+      campaigns: {},
+      web3: null,
+      showCreateCampaign: false
     };
   }
 
@@ -58,12 +59,12 @@ class App extends Component {
         { from: accounts[0] }
       );
 
-      let campaigns = [];
+      let campaigns = {};
 
       for (var i in campaignsToCheck) {
         const campaignInstance = await campaign.at(campaignsToCheck[i]);
         const summary = await campaignInstance.getSummary.call();
-        campaigns.push({
+        campaigns[campaignsToCheck[i]] = {
           address: campaignsToCheck[i],
           minimumContribution: summary[0],
           balance: summary[1],
@@ -72,60 +73,85 @@ class App extends Component {
           manager: summary[4],
           infoKey: summary[5],
           requestDaysDeadline: summary[6]
-        });
+        };
       }
       this.setState({ campaigns });
     });
   }
 
+  createNewCampaign = () => {
+    this.setState({ showCreateCampaign: true, showCampaign: false });
+  };
+
+  showCampaign = address => {
+    this.setState({ showCreateCampaign: false, showCampaign: address });
+  };
+
   render() {
+    const { campaigns, showCampaign, showCreateCampaign } = this.state;
+
     return (
-      <Router>
-        <div className="App">
-          <nav className="navbar pure-menu pure-menu-horizontal">
-            <Link to="/" className="pure-menu-heading pure-menu-link">
-              Collabonate
-            </Link>
-          </nav>
+      <div className="App">
+        <nav className="navbar pure-menu pure-menu-horizontal">
+          <a href="/" className="pure-menu-heading pure-menu-link">
+            Collabonate
+          </a>
+        </nav>
 
-          <Route
-            path="/campaigns/new"
-            //By passing the component with render, we can pass props.width.  Have to include {...props} here or it will mount/unmount this component every render.
-            render={props => <NewCampaign {...props} />}
-          />
+        <main className="container">
+          <div className="pure-g">
+            <div className="pure-u-1-1">
+              <h1>Welcome to Collabonate!</h1>
 
-          <main className="container">
-            <div className="pure-g">
-              <div className="pure-u-1-1">
-                <h1>Welcome to Collabonate!</h1>
+              {showCampaign && (
+                <ShowCampaign
+                  balance={campaigns[showCampaign].balance * 1}
+                  address={campaigns[showCampaign].address}
+                  manager={campaigns[showCampaign].manager}
+                  minimumContribution={
+                    campaigns[showCampaign].minimumContribution * 1
+                  }
+                  requestsCount={campaigns[showCampaign].requestsCount * 1}
+                  contributorsCount={
+                    campaigns[showCampaign].contributorsCount * 1
+                  }
+                  infoKey={campaigns[showCampaign].infoKey}
+                />
+              )}
+              {showCreateCampaign && <NewCampaign />}
 
-                <Link to="/campaigns/new">
-                  <Button
-                    content="Create a new campaign"
-                    icon="add circle"
-                    primary
-                  />
-                </Link>
-                <br />
+              {!showCreateCampaign &&
+                !showCampaign && (
+                  <div>
+                    <Button
+                      content="Create a new campaign"
+                      icon="add circle"
+                      primary
+                      onClick={this.createNewCampaign}
+                    />
 
-                <div style={styles.campaignList}>
-                  <h3>Active Campaigns ({this.state.campaigns.length})</h3>
-                  <Card.Group>
-                    {this.state.campaigns.map(contractInfo => {
-                      return (
-                        <CampaignCard
-                          key={contractInfo.address}
-                          contractInfo={contractInfo}
-                        />
-                      );
-                    })}
-                  </Card.Group>
-                </div>
-              </div>
+                    <div style={styles.campaignList}>
+                      <h3>
+                        Active Campaigns ({Object.keys(campaigns).length})
+                      </h3>
+                      <Card.Group>
+                        {Object.keys(campaigns).map(contractInfo => {
+                          return (
+                            <CampaignCard
+                              key={campaigns[contractInfo].address}
+                              showCampaignClicked={this.showCampaign}
+                              contractInfo={campaigns[contractInfo]}
+                            />
+                          );
+                        })}
+                      </Card.Group>
+                    </div>
+                  </div>
+                )}
             </div>
-          </main>
-        </div>
-      </Router>
+          </div>
+        </main>
+      </div>
     );
   }
 }

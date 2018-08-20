@@ -11,7 +11,6 @@ import {
 import getWeb3 from "../utils/getWeb3";
 
 import styles from "../styles/commonStyles";
-import { Link, BrowserRouter as Router } from "react-router-dom";
 
 class CampaignCard extends Component {
 	constructor(props) {
@@ -44,30 +43,28 @@ class CampaignCard extends Component {
 		const { web3 } = this.state;
 
 		return (
-			<Router>
-				<Link to={`/campaigns/${address}/`}>
-					<Card style={styles.campaignContainer}>
-						<Card.Content extra>
-							<span style={styles.floatRight}>
-								<Icon name="gift" />
-								Raised: {balance * 1} ETH
-							</span>
-							<span style={styles.floatLeft}>
-								<Icon name="group" />
-								{contributorsCount * 1 > 1 ||
-								contributorsCount * 1 < 1
-									? `${contributorsCount * 1} Contributors`
-									: `${contributorsCount * 1} Contributor`}
-							</span>
-						</Card.Content>
-						<Card.Content extra>
-							<Button fluid secondary>
-								View Campaign
-							</Button>
-						</Card.Content>
-					</Card>
-				</Link>
-			</Router>
+			<Card
+				style={styles.campaignContainer}
+				onClick={() => this.props.showCampaignClicked(address)}
+			>
+				<Card.Content extra>
+					<span style={styles.floatRight}>
+						<Icon name="gift" />
+						Raised: {balance * 1} ETH
+					</span>
+					<span style={styles.floatLeft}>
+						<Icon name="group" />
+						{contributorsCount * 1 > 1 || contributorsCount * 1 < 1
+							? `${contributorsCount * 1} Contributors`
+							: `${contributorsCount * 1} Contributor`}
+					</span>
+				</Card.Content>
+				<Card.Content extra>
+					<Button fluid secondary>
+						View Campaign
+					</Button>
+				</Card.Content>
+			</Card>
 		);
 	}
 }
