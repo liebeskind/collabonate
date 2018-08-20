@@ -47,11 +47,9 @@ contract Campaign {
         requestDaysDeadline = requestDays;
     }
 
-    /**
-      * @param amount of wei contributed to the campaign.
-    */
-    function contribute(uint amount) public payable {
-        require(msg.value >= minimumContribution);
+    function contribute() public payable {
+        uint amount = msg.value;
+        require(amount >= minimumContribution);
        
         contributors[msg.sender] += amount; // Tracks how much each 'approver' has contributed.
         totalContributions += amount;

@@ -85,22 +85,24 @@ contract("Campaign", async accounts => {
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 
 		const campaign = await Campaign.at(storedData[0]);
-		await campaign.contribute(minimumContribution);
-		// .call({ from: accounts[1] });
-		// const contributors = await campaign.contributors.call();
-		// const totalContributions = await campaign.totalContributions.call();
-		// const contributorsCount = await campaign.contributorsCount.call();
+		await campaign.contribute.sendTransaction({
+			value: minimumContribution,
+			from: accounts[1]
+		});
+
+		const totalContributions = await campaign.totalContributions.call();
+		const contributorsCount = await campaign.contributorsCount.call();
 
 		assert.equal(
-			contributors[accounts[1]],
+			totalContributions,
 			minimumContribution,
 			"Campaign should have received contribution from accounts[1] of minimumContribution."
 		);
 
-		// assert.equal(
-		// 	contributors[accounts[1]],
-		// 	minimumContribution,
-		// 	"Campaign should have received contribution from accounts[1] of minimumContribution."
-		// );
+		assert.equal(
+			contributorsCount,
+			1,
+			"Campaign should have received contribution from accounts[1] of minimumContribution."
+		);
 	});
 });
