@@ -9,7 +9,8 @@ class NewBasicInfoForm extends Component {
 		// whoRaisingFor is a dropdown of Myself, Family Member, Friend, Pet or Animal, Charity or Non-Profit, Other
 		whoRaisingFor: this.props.basicInfo.whoRaisingFor || "", //Should be a 'select' input
 		zipcode: this.props.basicInfo.zipcode || "",
-		category: this.props.basicInfo.category || "" //Should be a 'select' input
+		category: this.props.basicInfo.category || "", //Should be a 'select' input
+		requestDays: this.props.basicInfo.requestDays || ""
 		// loading: false
 	};
 
@@ -22,7 +23,8 @@ class NewBasicInfoForm extends Component {
 			campaignTitle: this.state.campaignTitle,
 			whoRaisingFor: this.state.whoRaisingFor,
 			zipcode: this.state.zipcode,
-			category: this.state.category
+			category: this.state.category,
+			requestDays: this.state.requestDays
 		};
 
 		this.props.basicInfoSubmitted(basicInfo);
@@ -32,7 +34,7 @@ class NewBasicInfoForm extends Component {
 	render() {
 		return (
 			<Form onSubmit={this.onSubmit}>
-				<Form.Field required>
+				{/*<Form.Field required>
 					<label>Goal</label>
 					<Input
 						label="ether"
@@ -42,7 +44,7 @@ class NewBasicInfoForm extends Component {
 							this.setState({ goal: event.target.value })
 						}
 					/>
-				</Form.Field>
+				</Form.Field>*/}
 				<Form.Field required>
 					<label>Minimum Contribution</label>
 					<Input
@@ -57,6 +59,19 @@ class NewBasicInfoForm extends Component {
 					/>
 				</Form.Field>
 				<Form.Field required>
+					<label># Days for Request Voting</label>
+					<Input
+						label="days"
+						labelPosition="right"
+						value={this.state.requestDays}
+						onChange={event =>
+							this.setState({
+								requestDays: event.target.value
+							})
+						}
+					/>
+				</Form.Field>
+				{/*<Form.Field required>
 					<label>Campaign Title</label>
 					<Input
 						value={this.state.campaignTitle}
@@ -91,7 +106,7 @@ class NewBasicInfoForm extends Component {
 							this.setState({ category: event.target.value })
 						}
 					/>
-				</Form.Field>
+				</Form.Field>*/}
 				<Button floated="right" loading={this.state.loading} primary>
 					Next
 				</Button>

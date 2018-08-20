@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Card, Button, Segment } from "semantic-ui-react";
-// import SimpleStorageContract from "../build/contracts/SimpleStorage.json";
+
 import CampaignFactoryContract from "../build/contracts/CampaignFactory.json";
 import CampaignContract from "../build/contracts/Campaign.json";
 
@@ -63,8 +63,6 @@ class App extends Component {
         { from: accounts[0] }
       );
 
-      console.log(campaignsToCheck);
-
       let campaigns = [];
 
       for (var i in campaignsToCheck) {
@@ -118,7 +116,6 @@ class App extends Component {
                 <h3>Active Campaigns ({this.state.campaigns.length})</h3>
                 <Card.Group>
                   {this.state.campaigns.map(contractInfo => {
-                    console.log(contractInfo);
                     return (
                       <CampaignCard
                         key={contractInfo.address}

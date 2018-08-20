@@ -105,28 +105,11 @@ class CampaignNew extends Component {
 		const { web3, campaignFactoryInstance, accounts } = this.state;
 		console.log(accounts);
 		this.setState({ loading: true, errorMessage: "" });
-
-		// if (!this.state.basicInfo || !this.state.basicInfo.minimumContribution)
-		// 	return this.setState({
-		// 		errorMessage:
-		// 			"We've encountered an error.  Please go back and make sure you entered a minimum contribution amount for this campaign.  It's the only thing you can't change later."
-		// 	});
-
-		// try {
-		// 	this.setState({ errorMessage: "" });
-		// 	// if (this.state.basicInfoRef) {
-		// 	// const toUpdate = { story: story };
-		// 	// await this.state.basicInfoRef.update(toUpdate);
-		// 	// console.log(this.state.basicInfoRef.key);
-		// 	// Save the campaign to smart contract
 		try {
-			// const accounts = await web3.eth.getAccounts();
 			await campaignFactoryInstance.createCampaign(
-				// this.state.basicInfo.minimumContribution,
-				// this.state.basicInfoRef.key
-				1, // minimumContribution
+				this.state.basicInfo.minimumContribution * 1,
 				"Test key",
-				5, // Days for requests
+				this.state.basicInfo.requestDays * 1,
 				{ from: accounts[0] }
 			);
 			const deployedCampaigns = await campaignFactoryInstance.getDeployedCampaigns.call();
