@@ -93,7 +93,9 @@ contract Campaign {
            databaseKey: databaseKey,
            noVoteContributionTotal: 0, // No contributors have voted against the request yet.
            /** Using .timestamp here even though it can be manipulated slightly by miners because we want to prevent voting after ~5 days.  
-               Accuracy not that important and it's easier (and more accurage) to estimate timestamp than block number. */
+               Accuracy not that important and it's easier (and more accurage) to estimate timestamp than block number.
+               Passes the 30 second rule. https://consensys.github.io/smart-contract-best-practices/recommendations/#timestamp-dependence
+            */
            createdTimestamp: block.timestamp 
         });
         requests.push(newRequest);
@@ -134,7 +136,8 @@ contract Campaign {
         require(!request.overNoLimit);
         require(!request.complete);
         require(request.createdTimestamp <= now - 1000 * 60 * 60 * 24 * requestDaysDeadline ); // Prevent finalizing request if haven't reached the request days deadline.
-        
+        require(address(this).balance > request.value); // Require there to be enough funds in the campaign.
+
         request.recipient.transfer(request.value); // Transfer the request total to the recipient address defined when creating the request.
         request.complete = true;
     }
