@@ -10,6 +10,7 @@ contract Campaign {
     uint public totalContributions; // Track total contributions, which will differ from this.balance if funds are distributed.
     uint public contributorsCount; // How many contributors are there.  Less important than totalContributions, but still interesting.
     uint public requestDaysDeadline; // Set by the manager when first creating the campaign.  It's known to contributors when they contribute.
+    bool private stopped = false;
 
     // Requests are considered approved if complete === true && overNoLimit === false.  Denied if overNoLimit === true.
     struct Request {
@@ -32,12 +33,16 @@ contract Campaign {
         _; // Replaced by the actual function body when the modifier is used.
     }
 
+    // Circuit breaker functionality
+    modifier stopInEmergency { if (!stopped) _; }
+    modifier onlyInEmergency { if (stopped) _; }
+
     /**
       * @dev Initialize the campaign and set total contributions to 0.
       * @param minimum min amount contributor can contribute to this campaign.
       * @param creator address of the person creating the campaign.  Necessary because when using a factory, can't pull msg.sender directly.
-	  * @param databaseKey key that connects this campaign to external resource.  Probably IPFS for content storage.
-	  * @param requestDays is set by the manager when first creating the campaign and is known to contributors when they contribute.
+	    * @param databaseKey key that connects this campaign to external resource.  Probably IPFS for content storage.
+	    * @param requestDays is set by the manager when first creating the campaign and is known to contributors when they contribute.
     */
     constructor(uint minimum, address creator, string databaseKey, uint requestDays) public {
         manager = creator;
@@ -47,7 +52,16 @@ contract Campaign {
         requestDaysDeadline = requestDays;
     }
 
-    function contribute() public payable {
+    // Circuit breaker functionality
+    function toggleContractActive() restricted public {
+        // You can add an additional modifier that restricts stopping a contract to be based on another action, such as a vote of users
+        stopped = !stopped;
+    }
+
+    /**
+      * @dev Allows contribution to the campaign.  Campaign manager can stop this functionality in an emergency.
+    */    
+    function contribute() stopInEmergency public payable {
         uint amount = msg.value;
         require(amount >= minimumContribution);
        
@@ -125,8 +139,11 @@ contract Campaign {
         request.complete = true;
     }
 
-    // Return request at index.
-    function getRequest(uint index) public view returns(string, uint, address, bool, bool, string, uint, uint) {
+    /**
+      * @dev Return request at index.  Restricted, so only manager can access
+      * @param index of the particular request to return.
+    */
+    function getRequest(uint index) restricted public view returns(string, uint, address, bool, bool, string, uint, uint) {
         Request memory request = requests[index];  // Use memory so not changing state.
         return (request.description, request.value, request.recipient, request.complete, request.overNoLimit, request.databaseKey, request.noVoteContributionTotal, request.createdTimestamp);
     }

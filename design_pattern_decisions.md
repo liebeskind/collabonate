@@ -20,4 +20,5 @@
 
 -   Using block.timestamp vs. block.number for estimating time elapsed in request
 
--   Emergency stop
+-   Emergency stop / circuit breaker
+    Implements toggleContractActive function, which serves as a circuit breaker. Adds a modifier to any contract that is not already restricted (where only the campaign owner can call it). The modifier can be triggered by the owner to prevent functionality in the event of an emergency.
