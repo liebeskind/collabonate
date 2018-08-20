@@ -21,7 +21,7 @@ contract Campaign {
         string databaseKey; // Location of other request-specific assets like images, videos, etc.
         uint noVoteContributionTotal; // Sum of no-votes.  Request is denied if noVoteContributionTotal is ever >= 15% of totalContributions.
         mapping(address => bool) noVotes; // Which contributors have voted against a request.  Can't vote against a request more than once per address.
-    	uint createdTimestamp; // Used to calculate the cutoff point where contributors can no longer vote no.
+    	  uint createdTimestamp; // Used to calculate the cutoff point where contributors can no longer vote no.
     }
     
     Request[] public requests; // Array of requests.
@@ -94,7 +94,7 @@ contract Campaign {
         Request storage request = requests[index]; // Use storage keyword because we want to change the request's state.
         
         require(contributors[msg.sender] > 0); // Check to see if the sender is a contributor to the campaign.
-        require(request.createdTimestamp > now - 1000 * 60 * 60 * 24 * requestDaysDeadline ); // Prevents voting if 'now' is more than 5 days from the request creation timestamp.
+        require(request.createdTimestamp >= now - 1000 * 60 * 60 * 24 * requestDaysDeadline ); // Prevents voting if 'now' is more than 5 days from the request creation timestamp.
         require(!request.noVotes[msg.sender]); //Can't vote twice or change vote.
         
         request.noVotes[msg.sender] = true; // Prevents contributor from voting more than once.
@@ -123,6 +123,12 @@ contract Campaign {
         
         request.recipient.transfer(request.value); // Transfer the request total to the recipient address defined when creating the request.
         request.complete = true;
+    }
+
+    // Return request at index.
+    function getRequest(uint index) public view returns(string, uint, address, bool, bool, string, uint, uint) {
+        Request memory request = requests[index];  // Use memory so not changing state.
+        return (request.description, request.value, request.recipient, request.complete, request.overNoLimit, request.databaseKey, request.noVoteContributionTotal, request.createdTimestamp);
     }
 
 }
