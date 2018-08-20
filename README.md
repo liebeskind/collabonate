@@ -1,6 +1,7 @@
 #Collabonate - Collaborative Fundraising Platform#
 
 ##How to Run##
+Deployed to Rinkeby network with address 0xa565b56aa976f49b35bc22eb6b6cf6be2bc95e9a.
 
 ##Description##
 Collabonate is a decentralized crowdfunding platform that uses the Ethereum Blockchain to eliminate costs, simplify creating campaigns, empower users to moderate and promote campaigns, reward contributions and empower contributors to govern the use of funds.
