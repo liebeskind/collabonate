@@ -164,20 +164,7 @@ class App extends Component {
                   balance={
                     web3.fromWei(campaigns[showCampaign].balance, "ether") * 1
                   }
-                  address={campaigns[showCampaign].address}
-                  manager={campaigns[showCampaign].manager}
-                  minimumContribution={
-                    campaigns[showCampaign].minimumContribution * 1
-                  }
-                  requestsCount={campaigns[showCampaign].requestsCount * 1}
-                  contributorsCount={
-                    campaigns[showCampaign].contributorsCount * 1
-                  }
-                  infoKey={campaigns[showCampaign].infoKey}
-                  campaignInstance={campaigns[showCampaign].campaignInstance}
-                  requestDaysDeadline={
-                    campaigns[showCampaign].requestDaysDeadline * 1
-                  }
+                  contractInfo={campaigns[showCampaign]}
                 />
               )}
               {showCreateCampaign && (

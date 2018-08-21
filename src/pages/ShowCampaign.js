@@ -24,27 +24,6 @@ class ShowCampaign extends Component {
 			});
 	}
 
-	renderCards() {
-		const {
-			balance,
-			manager,
-			minimumContribution,
-			requestsCount,
-			contributorsCount
-		} = this.props;
-
-		const items = [
-			{
-				header: "Manager",
-				meta: manager,
-				description:
-					"The Manager created this campaign and can create requests to withdraw money.",
-				style: { overflowWrap: "break-word" }
-			}
-		];
-		return <Card.Group itemsPerRow={1} doubling items={items} />;
-	}
-
 	render() {
 		const {
 			balance,
@@ -56,13 +35,16 @@ class ShowCampaign extends Component {
 			infoKey,
 			campaignInstance,
 			days,
+			goal,
+			title,
+			category,
 			requestDaysDeadline
-		} = this.props;
+		} = this.props.contractInfo;
 
 		const { web3 } = this.state;
 
-		// const balanceEther = web3.utils.fromWei(balance, "ether");
-		// const progress = (balanceEther / goal) * 100;
+		const balanceEther = web3 ? web3.fromWei(balance * 1, "ether") : 0;
+		const progress = (balanceEther / goal) * 1 * 100;
 
 		return (
 			<Segment>
@@ -70,22 +52,35 @@ class ShowCampaign extends Component {
 					<Grid.Row>
 						<Grid.Column width={10}>
 							<Grid.Row>
-								<Card fluid />
+								<Card fluid>
+									<Card.Content>
+										<Card.Header>{title}</Card.Header>
+										<Card.Meta>{category}</Card.Meta>
+										<Card.Meta>
+											{`Goal: ${goal * 1} ETH`}
+										</Card.Meta>
+									</Card.Content>
+								</Card>
 							</Grid.Row>
 						</Grid.Column>
 						<Grid.Column width={6}>
 							<Grid.Row>
 								<Segment>
 									<h2>
-										<strong>Balance: {balance} ETH</strong>
+										<strong>
+											Balance: {balance * 1} ETH
+										</strong>
 									</h2>
 									<div>
-										Raised from {contributorsCount} people
+										Raised from {contributorsCount * 1}{" "}
+										contributors
 									</div>
 									<br />
 									<ContributeForm
-										minContribution={minimumContribution}
-										address={address}
+										minContribution={
+											minimumContribution * 1
+										}
+										address={address * 1}
 										web3={web3}
 										campaignInstance={campaignInstance}
 									/>
@@ -96,13 +91,13 @@ class ShowCampaign extends Component {
 							<Grid.Row>
 								<Segment>
 									<h3>
-										{requestsCount} requests pending (
-										{balance} ETH balance)
+										{requestsCount * 1} requests pending (
+										{balance * 1} ETH balance)
 									</h3>
 
 									<h4>
 										Requests can be voted against for{" "}
-										{requestDaysDeadline} days
+										{requestDaysDeadline * 1} days
 									</h4>
 
 									<Button
