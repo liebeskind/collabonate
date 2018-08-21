@@ -174,6 +174,7 @@ class App extends Component {
                   requestsCount={campaigns[showRequestList].requestsCount * 1}
                   address={campaigns[showRequestList].address}
                   manager={campaigns[showRequestList].manager}
+                  createNewRequest={this.createNewRequest}
                 />
               )}
 

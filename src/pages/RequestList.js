@@ -74,9 +74,7 @@ class RequestList extends Component {
 					currentAccount={this.state.currentAccount}
 					manager={manager}
 					address={address}
-					createNewRequest={() =>
-						this.props.createNewRequest(address)
-					}
+					createNewRequest={this.props.createNewRequest}
 				/>
 				<Table>
 					<Header>
