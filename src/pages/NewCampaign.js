@@ -75,6 +75,7 @@ class CampaignNew extends Component {
 			);
 			const deployedCampaigns = await campaignFactoryInstance.getDeployedCampaigns.call();
 			console.log("Created new campaign", deployedCampaigns);
+			this.props.campaignCreated();
 			// this.next();
 		} catch (err) {
 			this.setState({

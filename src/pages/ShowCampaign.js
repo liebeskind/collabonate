@@ -80,7 +80,7 @@ class ShowCampaign extends Component {
 										<strong>Balance: {balance} ETH</strong>
 									</h2>
 									<div>
-										Raised by {contributorsCount} people
+										Raised from {contributorsCount} people
 									</div>
 									<br />
 									<ContributeForm

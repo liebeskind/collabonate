@@ -88,6 +88,11 @@ class App extends Component {
     this.setState({ showCreateCampaign: false, showCampaign: address });
   };
 
+  campaignCreated = () => {
+    this.setState({ showCreateCampaign: false, showCampaign: false });
+    window.location.reload(true);
+  };
+
   render() {
     const { campaigns, showCampaign, showCreateCampaign, web3 } = this.state;
 
@@ -125,7 +130,9 @@ class App extends Component {
                   }
                 />
               )}
-              {showCreateCampaign && <NewCampaign />}
+              {showCreateCampaign && (
+                <NewCampaign campaignCreated={this.campaignCreated} />
+              )}
 
               {!showCreateCampaign &&
                 !showCampaign && (
