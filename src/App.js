@@ -89,7 +89,7 @@ class App extends Component {
   };
 
   render() {
-    const { campaigns, showCampaign, showCreateCampaign } = this.state;
+    const { campaigns, showCampaign, showCreateCampaign, web3 } = this.state;
 
     return (
       <div className="App">
@@ -102,11 +102,13 @@ class App extends Component {
         <main className="container">
           <div className="pure-g">
             <div className="pure-u-1-1">
-              <h1>Welcome to Collabonate!</h1>
+              <h1>Donate and Collaborate on the Use of Funds</h1>
 
               {showCampaign && (
                 <ShowCampaign
-                  balance={campaigns[showCampaign].balance * 1}
+                  balance={
+                    web3.fromWei(campaigns[showCampaign].balance, "ether") * 1
+                  }
                   address={campaigns[showCampaign].address}
                   manager={campaigns[showCampaign].manager}
                   minimumContribution={

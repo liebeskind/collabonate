@@ -104,7 +104,7 @@ contract("Campaign", async accounts => {
 		assert.equal(
 			contributorsCount,
 			1,
-			"Campaign should have received contribution from accounts[1] of minimumContribution."
+			"Campaign should have 1 contributor."
 		);
 	});
 
@@ -126,13 +126,33 @@ contract("Campaign", async accounts => {
 		assert.equal(
 			contributorsCount,
 			1,
-			"Campaign should have received contribution from accounts[1] of minimumContribution."
+			"Campaign should have 1 contributor."
 		);
 
 		assert.equal(
 			totalContributions,
 			minimumContribution * 2,
 			"Campaign should have received contribution from accounts[1] of minimumContribution."
+		);
+	});
+
+	// Check that contributor count increase to 2 if another account contributes.
+	it("...should increase contributor count if another account contributes.", async () => {
+		const campaignFactoryInstance = await CampaignFactory.deployed();
+		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
+		const campaign = await Campaign.at(storedData[0]);
+
+		await campaign.contribute.sendTransaction({
+			value: minimumContribution,
+			from: accounts[2]
+		});
+
+		const contributorsCount = await campaign.contributorsCount.call();
+
+		assert.equal(
+			contributorsCount,
+			2,
+			"Campaign should have 2 contributor."
 		);
 	});
 

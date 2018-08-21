@@ -21,6 +21,12 @@ module.exports = {
 				"https://rinkeby.infura.io/" + infura_apikey
 			),
 			network_id: 4
+		},
+		solc: {
+			optimizer: {
+				enabled: true,
+				runs: 200
+			}
 		}
 	}
 };

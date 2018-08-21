@@ -61,12 +61,12 @@ contract Campaign {
     /**
       * @dev Allows contribution to the campaign.  Campaign manager can stop this functionality in an emergency.
     */    
-    function contribute() stopInEmergency public payable {
+    function contribute() public payable {
         uint amount = msg.value;
-        require(amount >= minimumContribution);
+        require(msg.value >= minimumContribution);
        
         contributors[msg.sender] += amount; // Tracks how much each 'approver' has contributed.
-        totalContributions += amount;
+        totalContributions += msg.value;
        
        	// Increment contributor count only if this is the sender's first contribution. 
         if (contributors[msg.sender] == amount) {

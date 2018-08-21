@@ -75,7 +75,7 @@ class ShowCampaign extends Component {
 							<Grid.Row>
 								<Segment>
 									<h2>
-										<strong>Balance: {balance}</strong>
+										<strong>Balance: {balance} ETH</strong>
 									</h2>
 									<div>
 										Raised by {contributorsCount} people
@@ -95,7 +95,7 @@ class ShowCampaign extends Component {
 								<Segment>
 									<h3>
 										{requestsCount} requests pending (
-										{balance} Wei balance)
+										{balance} ETH balance)
 									</h3>
 
 									<Button fluid secondary>

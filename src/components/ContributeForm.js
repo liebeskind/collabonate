@@ -33,11 +33,13 @@ class ContributeForm extends Component {
 
 		this.setState({ loading: true, errorMessage: "" });
 
+		let valueToSend = web3.toWei(this.state.value, "ether");
+
 		try {
-			web3.eth.getAccounts(async (error, accounts) => {
-				await campaignInstance.contribute.sendTransaction({
+			web3.eth.getAccounts((error, accounts) => {
+				campaignInstance.contribute({
 					from: accounts[0],
-					value: this.state.value
+					value: valueToSend
 				});
 			});
 		} catch (err) {
@@ -57,7 +59,7 @@ class ContributeForm extends Component {
 						onChange={event =>
 							this.setState({ value: event.target.value })
 						}
-						label="wei (1/1000000000000000000 ETH)"
+						label="ETH"
 						labelPosition="right"
 					/>
 				</Form.Field>

@@ -1,7 +1,7 @@
 #Collabonate - Collaborative Fundraising Platform#
 
 ##How to Run##
-Deployed the contract to the Rinkeby network with address 0xa565b56aa976f49b35bc22eb6b6cf6be2bc95e9a.
+The CampaignFactory contract is deployed on the Rinkeby network. Find the address in deployed_addresses.txt
 
 You can access the live frontend here - https://collabonate.herokuapp.com/
 

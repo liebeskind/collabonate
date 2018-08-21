@@ -50,7 +50,8 @@ class CampaignCard extends Component {
 				<Card.Content extra>
 					<span style={styles.floatRight}>
 						<Icon name="gift" />
-						Raised: {balance * 1} ETH
+						Raised:{" "}
+						{web3 ? web3.fromWei(balance * 1, "ether") : "NA"} ETH
 					</span>
 					<span style={styles.floatLeft}>
 						<Icon name="group" />
