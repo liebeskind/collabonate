@@ -107,7 +107,7 @@ class ShowCampaign extends Component {
 
 									<Button
 										onClick={() =>
-											this.showRequestList(address)
+											this.props.showRequestList(address)
 										}
 										fluid
 										secondary

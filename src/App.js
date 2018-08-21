@@ -171,9 +171,9 @@ class App extends Component {
               {showRequestList && (
                 <RequestList
                   campaignInstance={campaigns[showRequestList].campaignInstance}
-                  requestsCount={campaigns[showCampaign].requestsCount * 1}
-                  address={campaigns[showCampaign].address}
-                  manager={campaigns[showCampaign].manager}
+                  requestsCount={campaigns[showRequestList].requestsCount * 1}
+                  address={campaigns[showRequestList].address}
+                  manager={campaigns[showRequestList].manager}
                 />
               )}
 
