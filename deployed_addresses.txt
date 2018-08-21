@@ -1,3 +1,3 @@
 Network: rinkeby (id: 4)
-  CampaignFactory: 0xeacd912e6b493990ff0812f64f92471c4454e7eb
-  Migrations: 0x7f901e6f8fe42509934fe1e7830a82ffa75e602d
+  CampaignFactory: 0x783d4f7513fc064b9773f05cbae151cc07a5fc7a
+  Migrations: 0x852f4795e6510f9822b71f25f9473e98ae068531

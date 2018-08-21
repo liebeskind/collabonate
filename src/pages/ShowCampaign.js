@@ -54,7 +54,9 @@ class ShowCampaign extends Component {
 			requestsCount,
 			contributorsCount,
 			infoKey,
-			campaignInstance
+			campaignInstance,
+			days,
+			requestDaysDeadline
 		} = this.props;
 
 		const { web3 } = this.state;
@@ -97,6 +99,11 @@ class ShowCampaign extends Component {
 										{requestsCount} requests pending (
 										{balance} ETH balance)
 									</h3>
+
+									<h4>
+										Requests can be voted against for{" "}
+										{requestDaysDeadline} days
+									</h4>
 
 									<Button fluid secondary>
 										View Requests

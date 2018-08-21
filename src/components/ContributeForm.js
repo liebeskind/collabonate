@@ -53,7 +53,13 @@ class ContributeForm extends Component {
 		return (
 			<Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
 				<Form.Field>
-					<label>Amount to Contribute</label>
+					<label>
+						Amount to Contribute (
+						{this.props.minContribution
+							.toString()
+							.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+						Wei Minimum)
+					</label>
 					<Input
 						value={this.state.value}
 						onChange={event =>

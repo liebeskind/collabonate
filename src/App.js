@@ -120,6 +120,9 @@ class App extends Component {
                   }
                   infoKey={campaigns[showCampaign].infoKey}
                   campaignInstance={campaigns[showCampaign].campaignInstance}
+                  requestDaysDeadline={
+                    campaigns[showCampaign].requestDaysDeadline * 1
+                  }
                 />
               )}
               {showCreateCampaign && <NewCampaign />}

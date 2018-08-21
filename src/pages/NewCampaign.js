@@ -57,49 +57,20 @@ class CampaignNew extends Component {
 		});
 	};
 
-	basicInfoSubmitted = async basicInfo => {
+	basicInfoSubmitted = basicInfo => {
 		this.setState({ basicInfo: basicInfo });
-		this.onSubmit();
-		// try {
-		// 	this.setState({ errorMessage: "" });
-		// 	if (this.state.basicInfoRef) {
-		// 		await this.state.basicInfoRef.update(basicInfo);
-		// 		this.setState({ showingPage: 1 });
-		// 	} else {
-		// 		// const basicInfoRef = await firebase
-		// 		// 	.database()
-		// 		// 	.ref("campaignBasicInfo")
-		// 		// 	.push(basicInfo);
-		// 		// this.setState({ basicInfoRef: basicInfoRef, showingPage: 1 });
-		// 		this.onSubmit();
-		// 	}
-		// } catch (err) {
-		// 	console.log(err.message);
-		// 	this.setState({ errorMessage: err.message });
-		// }
+		this.onSubmit(basicInfo);
 	};
 
-	// goBack = () => {
-	// 	let toSetPage = this.state.showingPage;
-	// 	toSetPage--;
-	// 	this.setState({ showingPage: toSetPage });
-	// };
-
-	// next = () => {
-	// 	let toSetPage = this.state.showingPage;
-	// 	toSetPage++;
-	// 	this.setState({ showingPage: toSetPage });
-	// };
-
-	onSubmit = async story => {
+	onSubmit = async basicInfo => {
 		const { web3, campaignFactoryInstance, accounts } = this.state;
-		console.log(accounts);
+		console.log(basicInfo);
 		this.setState({ loading: true, errorMessage: "" });
 		try {
 			await campaignFactoryInstance.createCampaign(
-				this.state.basicInfo.minimumContribution * 1,
+				basicInfo.minimumContribution * 1,
 				"Test key",
-				this.state.basicInfo.requestDays * 1,
+				basicInfo.requestDays * 1,
 				{ from: accounts[0] }
 			);
 			const deployedCampaigns = await campaignFactoryInstance.getDeployedCampaigns.call();
@@ -113,15 +84,6 @@ class CampaignNew extends Component {
 			});
 		}
 		this.setState({ loading: false });
-		// } else {
-		// 	this.setState({
-		// 		errorMessage:
-		// 			"Sorry, we ran into an issue saving your campaign.  Try again!"
-		// 	});
-		// }
-		// } catch (err) {
-		// 	this.setState({ errorMessage: err.message });
-		// }
 	};
 
 	renderPage = () => {
@@ -132,27 +94,6 @@ class CampaignNew extends Component {
 				basicInfoSubmitted={this.basicInfoSubmitted}
 			/>
 		);
-		// } else if (this.state.showingPage === 1) {
-		// 	return (
-		// 		<ChooseImage
-		// 			goBack={this.goBack}
-		// 			basicInfoRef={this.state.basicInfoRef}
-		// 			next={this.next}
-		// 		/>
-		// 	);
-		// } else if (this.state.showingPage === 2) {
-		// 	return (
-		// 		<AddStoryAndSubmit
-		// 			goBack={this.goBack}
-		// 			submit={this.onSubmit}
-		// 			loading={this.state.loading}
-		// 		/>
-		// 	);
-		// } else if (this.state.showingPage === 3) {
-		// 	return <CampaignCreatedCongrats />;
-		// } else {
-		// 	console.log("Should never get here."); // Route back to dashboard?
-		// }
 	};
 
 	render() {
