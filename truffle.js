@@ -19,6 +19,8 @@ module.exports = {
 				mnemonic,
 				"https://rinkeby.infura.io/" + infura_apikey
 			),
+			// host: "localhost",
+			// port: 8545,
 			network_id: 4
 		},
 		solc: {

@@ -42,8 +42,9 @@ class RequestRow extends Component {
 
 	render() {
 		const { Row, Cell } = Table;
-		const { id, request, contributorsCount } = this.props;
-		const readyToFinalize = request.approvalCount > contributorsCount / 2;
+		const { id, request } = this.props;
+		const readyToFinalize = false;
+		// const readyToFinalize = request.approvalCount > contributorsCount / 2;
 		const { web3 } = this.state;
 
 		return (
@@ -57,9 +58,7 @@ class RequestRow extends Component {
 					{web3 ? web3.fromWei(request.value, "ether") : "NA"}
 				</Cell>
 				<Cell>{request.recipient}</Cell>
-				<Cell>
-					{request.approvalCount}/{contributorsCount}
-				</Cell>
+				<Cell>{contributorsCount}</Cell>
 				<Cell>
 					{request.complete ? null : (
 						<Button color="green" basic onClick={this.onApprove}>

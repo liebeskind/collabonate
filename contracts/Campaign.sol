@@ -155,13 +155,14 @@ contract Campaign {
       * @dev Returns a summary of the campaign
     */
     function getSummary() public view returns(
-        uint, uint, uint, uint, address, string, uint
+        uint, uint, uint, uint, uint, address, string, uint
     ) { // Not changing in data, so 'view'
         return (
             minimumContribution,
             address(this).balance,
             requests.length,
             contributorsCount,
+            totalContributions,
             manager,
             infoKey,
             requestDaysDeadline

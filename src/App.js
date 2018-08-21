@@ -75,9 +75,10 @@ class App extends Component {
           balance: summary[1],
           requestsCount: summary[2],
           contributorsCount: summary[3],
-          manager: summary[4],
-          infoKey: summary[5],
-          requestDaysDeadline: summary[6],
+          totalContributions: summary[4],
+          manager: summary[5],
+          infoKey: summary[6],
+          requestDaysDeadline: summary[7],
           campaignInstance
         };
       }
@@ -187,6 +188,9 @@ class App extends Component {
                   address={campaigns[showRequestList].address}
                   manager={campaigns[showRequestList].manager}
                   createNewRequest={this.createNewRequest}
+                  totalContributions={
+                    campaigns[showRequestList].totalContributions
+                  }
                 />
               )}
 

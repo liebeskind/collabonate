@@ -47,7 +47,7 @@ class RequestList extends Component {
 				createdTimestamp: fetched[7] * 1
 			});
 		}
-		console.log(requests);
+
 		this.setState({ requests });
 	};
 
