@@ -53,7 +53,7 @@ class RequestList extends Component {
 	};
 
 	renderRows() {
-		const { address, contributorsCount } = this.props;
+		const { address, contributorsCount, campaignInstance } = this.props;
 		return this.props.requests.map((request, index) => {
 			return (
 				<RequestRow
@@ -61,7 +61,8 @@ class RequestList extends Component {
 					id={index}
 					request={request}
 					address={address}
-					approversCount={contributorsCount}
+					contributorsCount={contributorsCount}
+					campaignInstance={campaignInstance}
 				/>
 			);
 		});
@@ -78,6 +79,9 @@ class RequestList extends Component {
 					currentAccount={this.state.currentAccount}
 					manager={manager}
 					address={address}
+					createNewRequest={() =>
+						this.props.createNewRequest(address)
+					}
 				/>
 				<Table>
 					<Header>

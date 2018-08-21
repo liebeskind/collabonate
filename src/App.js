@@ -116,6 +116,10 @@ class App extends Component {
     window.location.reload(true);
   };
 
+  createNewRequest = address => {
+    console.log(address);
+  };
+
   render() {
     const {
       campaigns,

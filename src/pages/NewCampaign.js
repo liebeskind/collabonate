@@ -1,15 +1,9 @@
 import React, { Component } from "react";
 import { Form, Button, Input, Message } from "semantic-ui-react";
-// import firebase from "../../utils/firebase";
-
-// import Layout from "../../components/Layout";
 import CampaignFactoryContract from "../../build/contracts/CampaignFactory.json";
 import CampaignContract from "../../build/contracts/Campaign.json";
 import getWeb3 from "../utils/getWeb3";
 import BasicInfoForm from "../components/BasicInfoForm";
-// import ChooseImage from "../../components/ChooseImage";
-// import AddStoryAndSubmit from "../../components/AddStoryAndSubmit";
-// import CampaignCreatedCongrats from "../../components/CampaignCreatedCongrats";
 import styles from "../styles/commonStyles";
 
 class CampaignNew extends Component {
