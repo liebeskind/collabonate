@@ -10,6 +10,7 @@ import CampaignCard from "./components/CampaignCard";
 import NewCampaign from "./pages/NewCampaign";
 import ShowCampaign from "./pages/ShowCampaign";
 import RequestList from "./pages/RequestList";
+import NewRequest from "./pages/NewRequest";
 
 import styles from "./styles/commonStyles";
 
@@ -27,7 +28,8 @@ class App extends Component {
       web3: null,
       showCreateCampaign: false,
       showRequestList: false,
-      showCampaign: false
+      showCampaign: false,
+      showCreateRequest: false
     };
   }
 
@@ -87,7 +89,8 @@ class App extends Component {
     this.setState({
       showCreateCampaign: true,
       showCampaign: false,
-      showRequestList: false
+      showRequestList: false,
+      showCreateRequest: false
     });
   };
 
@@ -95,7 +98,8 @@ class App extends Component {
     this.setState({
       showCreateCampaign: false,
       showCampaign: address,
-      showRequestList: false
+      showRequestList: false,
+      showCreateRequest: false
     });
   };
 
@@ -103,7 +107,8 @@ class App extends Component {
     this.setState({
       showCreateCampaign: false,
       showCampaign: false,
-      showRequestList: address
+      showRequestList: address,
+      showCreateRequest: false
     });
   };
 
@@ -111,22 +116,29 @@ class App extends Component {
     this.setState({
       showCreateCampaign: false,
       showCampaign: false,
-      showRequestList: false
+      showRequestList: false,
+      showCreateRequest: false
     });
     window.location.reload(true);
   };
 
   createNewRequest = address => {
-    console.log(address);
+    this.setState({
+      showCreateCampaign: false,
+      showCampaign: false,
+      showRequestList: false,
+      showCreateRequest: address
+    });
   };
 
   render() {
     const {
+      web3,
       campaigns,
       showCampaign,
       showCreateCampaign,
-      web3,
-      showRequestList
+      showRequestList,
+      showCreateRequest
     } = this.state;
 
     return (
@@ -178,9 +190,21 @@ class App extends Component {
                 />
               )}
 
+              {showCreateRequest && (
+                <NewRequest
+                  showRequestList={this.showRequestList}
+                  campaignInstance={
+                    campaigns[showCreateRequest].campaignInstance
+                  }
+                  address={campaigns[showCreateRequest].address}
+                  manager={campaigns[showCreateRequest].manager}
+                />
+              )}
+
               {!showCreateCampaign &&
                 !showCampaign &&
-                !showRequestList && (
+                !showRequestList &&
+                !showCreateRequest && (
                   <div>
                     <Button
                       content="Create a new campaign"
