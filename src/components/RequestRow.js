@@ -54,13 +54,31 @@ class RequestRow extends Component {
 	};
 
 	onFinalize = async () => {
-		// const campaign = Campaign(this.props.address);
-
-		// const accounts = await web3.eth.getAccounts();
-		await this.props.campaignInstance.methods.finalizeRequest(
-			this.props.id
-		);
-		// .send({ from: accounts[0] });
+		const { campaignInstance, currentAccount, id } = this.props;
+		this.setState({ loading: true });
+		try {
+			this.props.campaignInstance
+				.finalizeRequest(id, {
+					from: currentAccount
+				})
+				.then(err => {
+					this.setState({
+						loading: false,
+						votedNo: true
+					});
+				})
+				.catch(err => {
+					this.setState({
+						loading: false,
+						errorMessage: err.message
+					});
+				});
+		} catch (err) {
+			this.setState({
+				loading: false,
+				errorMessage: err
+			});
+		}
 	};
 
 	render() {
@@ -107,7 +125,12 @@ class RequestRow extends Component {
 				</Cell>
 				<Cell>
 					{request.complete ? null : (
-						<Button color="teal" basic onClick={this.onFinalize}>
+						<Button
+							color="teal"
+							basic
+							onClick={this.onFinalize}
+							loading={loading}
+						>
 							Finalize
 						</Button>
 					)}
