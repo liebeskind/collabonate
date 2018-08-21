@@ -64,6 +64,9 @@ class CampaignNew extends Component {
 				basicInfo.minimumContribution * 1,
 				"Test key",
 				basicInfo.requestDays * 1,
+				basicInfo.title,
+				basicInfo.goal * 1,
+				basicInfo.category,
 				{ from: accounts[0] }
 			);
 			const deployedCampaigns = await campaignFactoryInstance.getDeployedCampaigns.call();

@@ -279,14 +279,14 @@
     "absolutePath": "/Users/danielliebeskind/Dropbox/Hacking/ethereum/collabonate-react/contracts/LibraryDemo.sol",
     "exportedSymbols": {
       "CollabonateCoin": [
-        523
+        565
       ]
     },
-    "id": 524,
+    "id": 566,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 481,
+        "id": 523,
         "literals": [
           "solidity",
           "^",
@@ -299,10 +299,10 @@
       {
         "absolutePath": "zeppelin/contracts/token/StandardToken.sol",
         "file": "zeppelin/contracts/token/StandardToken.sol",
-        "id": 482,
+        "id": 524,
         "nodeType": "ImportDirective",
-        "scope": 524,
-        "sourceUnit": 1056,
+        "scope": 566,
+        "sourceUnit": 1098,
         "src": "25:52:2",
         "symbolAliases": [],
         "unitAlias": ""
@@ -313,47 +313,47 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 483,
+              "id": 525,
               "name": "StandardToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1055,
+              "referencedDeclaration": 1097,
               "src": "309:13:2",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_StandardToken_$1055",
+                "typeIdentifier": "t_contract$_StandardToken_$1097",
                 "typeString": "contract StandardToken"
               }
             },
-            "id": 484,
+            "id": 526,
             "nodeType": "InheritanceSpecifier",
             "src": "309:13:2"
           }
         ],
         "contractDependencies": [
-          752,
-          795,
-          824,
-          1055
+          794,
+          837,
+          866,
+          1097
         ],
         "contractKind": "contract",
         "documentation": "@title Creation of a CollabonateCoin, which could be used to power the Collabonate system\n@dev This coin could be required to make donations and be rewarded for participation in the network.",
         "fullyImplemented": true,
-        "id": 523,
+        "id": 565,
         "linearizedBaseContracts": [
-          523,
-          1055,
-          752,
-          795,
-          824
+          565,
+          1097,
+          794,
+          837,
+          866
         ],
         "name": "CollabonateCoin",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 487,
+            "id": 529,
             "name": "symbol",
             "nodeType": "VariableDeclaration",
-            "scope": 523,
+            "scope": 565,
             "src": "327:29:2",
             "stateVariable": true,
             "storageLocation": "default",
@@ -362,7 +362,7 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 485,
+              "id": 527,
               "name": "string",
               "nodeType": "ElementaryTypeName",
               "src": "327:6:2",
@@ -374,7 +374,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "434f4c4c",
-              "id": 486,
+              "id": 528,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -393,10 +393,10 @@
           },
           {
             "constant": false,
-            "id": 490,
+            "id": 532,
             "name": "name",
             "nodeType": "VariableDeclaration",
-            "scope": 523,
+            "scope": 565,
             "src": "360:38:2",
             "stateVariable": true,
             "storageLocation": "default",
@@ -405,7 +405,7 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 488,
+              "id": 530,
               "name": "string",
               "nodeType": "ElementaryTypeName",
               "src": "360:6:2",
@@ -417,7 +417,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "436f6c6c61626f6e617465436f696e",
-              "id": 489,
+              "id": 531,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -436,10 +436,10 @@
           },
           {
             "constant": false,
-            "id": 493,
+            "id": 535,
             "name": "decimals",
             "nodeType": "VariableDeclaration",
-            "scope": 523,
+            "scope": 565,
             "src": "402:26:2",
             "stateVariable": true,
             "storageLocation": "default",
@@ -448,7 +448,7 @@
               "typeString": "uint8"
             },
             "typeName": {
-              "id": 491,
+              "id": 533,
               "name": "uint8",
               "nodeType": "ElementaryTypeName",
               "src": "402:5:2",
@@ -460,7 +460,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "3138",
-              "id": 492,
+              "id": 534,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -479,14 +479,14 @@
           },
           {
             "body": {
-              "id": 521,
+              "id": 563,
               "nodeType": "Block",
               "src": "467:118:2",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 508,
+                    "id": 550,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -495,34 +495,34 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 496,
+                        "id": 538,
                         "name": "balances",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 688,
+                        "referencedDeclaration": 730,
                         "src": "473:8:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                           "typeString": "mapping(address => uint256)"
                         }
                       },
-                      "id": 499,
+                      "id": 541,
                       "indexExpression": {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 497,
+                          "id": 539,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1070,
+                          "referencedDeclaration": 1112,
                           "src": "482:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 498,
+                        "id": 540,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -555,7 +555,7 @@
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 507,
+                      "id": 549,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -563,7 +563,7 @@
                       "leftExpression": {
                         "argumentTypes": null,
                         "hexValue": "31303030",
-                        "id": 500,
+                        "id": 542,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -589,7 +589,7 @@
                               "typeIdentifier": "t_uint256",
                               "typeString": "uint256"
                             },
-                            "id": 505,
+                            "id": 547,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -597,7 +597,7 @@
                             "leftExpression": {
                               "argumentTypes": null,
                               "hexValue": "3130",
-                              "id": 501,
+                              "id": 543,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -619,11 +619,11 @@
                               "arguments": [
                                 {
                                   "argumentTypes": null,
-                                  "id": 503,
+                                  "id": 545,
                                   "name": "decimals",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 493,
+                                  "referencedDeclaration": 535,
                                   "src": "518:8:2",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_uint8",
@@ -638,7 +638,7 @@
                                     "typeString": "uint8"
                                   }
                                 ],
-                                "id": 502,
+                                "id": 544,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": true,
@@ -651,7 +651,7 @@
                                 },
                                 "typeName": "uint256"
                               },
-                              "id": 504,
+                              "id": 546,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -672,7 +672,7 @@
                             }
                           }
                         ],
-                        "id": 506,
+                        "id": 548,
                         "isConstant": false,
                         "isInlineArray": false,
                         "isLValue": false,
@@ -697,25 +697,25 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 509,
+                  "id": 551,
                   "nodeType": "ExpressionStatement",
                   "src": "473:55:2"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 519,
+                    "id": 561,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 510,
+                      "id": 552,
                       "name": "totalSupply",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 799,
+                      "referencedDeclaration": 841,
                       "src": "534:11:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -730,7 +730,7 @@
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 518,
+                      "id": 560,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -738,7 +738,7 @@
                       "leftExpression": {
                         "argumentTypes": null,
                         "hexValue": "31303030",
-                        "id": 511,
+                        "id": 553,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -764,7 +764,7 @@
                               "typeIdentifier": "t_uint256",
                               "typeString": "uint256"
                             },
-                            "id": 516,
+                            "id": 558,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -772,7 +772,7 @@
                             "leftExpression": {
                               "argumentTypes": null,
                               "hexValue": "3130",
-                              "id": 512,
+                              "id": 554,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -794,11 +794,11 @@
                               "arguments": [
                                 {
                                   "argumentTypes": null,
-                                  "id": 514,
+                                  "id": 556,
                                   "name": "decimals",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 493,
+                                  "referencedDeclaration": 535,
                                   "src": "570:8:2",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_uint8",
@@ -813,7 +813,7 @@
                                     "typeString": "uint8"
                                   }
                                 ],
-                                "id": 513,
+                                "id": 555,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": true,
@@ -826,7 +826,7 @@
                                 },
                                 "typeName": "uint256"
                               },
-                              "id": 515,
+                              "id": 557,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -847,7 +847,7 @@
                             }
                           }
                         ],
-                        "id": 517,
+                        "id": 559,
                         "isConstant": false,
                         "isInlineArray": false,
                         "isLValue": false,
@@ -872,14 +872,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 520,
+                  "id": 562,
                   "nodeType": "ExpressionStatement",
                   "src": "534:46:2"
                 }
               ]
             },
             "documentation": null,
-            "id": 522,
+            "id": 564,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -887,26 +887,26 @@
             "name": "CollabonateCoin",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 494,
+              "id": 536,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "457:2:2"
             },
             "payable": false,
             "returnParameters": {
-              "id": 495,
+              "id": 537,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "467:0:2"
             },
-            "scope": 523,
+            "scope": 565,
             "src": "433:152:2",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 524,
+        "scope": 566,
         "src": "281:306:2"
       }
     ],
@@ -916,14 +916,14 @@
     "absolutePath": "/Users/danielliebeskind/Dropbox/Hacking/ethereum/collabonate-react/contracts/LibraryDemo.sol",
     "exportedSymbols": {
       "CollabonateCoin": [
-        523
+        565
       ]
     },
-    "id": 524,
+    "id": 566,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 481,
+        "id": 523,
         "literals": [
           "solidity",
           "^",
@@ -936,10 +936,10 @@
       {
         "absolutePath": "zeppelin/contracts/token/StandardToken.sol",
         "file": "zeppelin/contracts/token/StandardToken.sol",
-        "id": 482,
+        "id": 524,
         "nodeType": "ImportDirective",
-        "scope": 524,
-        "sourceUnit": 1056,
+        "scope": 566,
+        "sourceUnit": 1098,
         "src": "25:52:2",
         "symbolAliases": [],
         "unitAlias": ""
@@ -950,47 +950,47 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 483,
+              "id": 525,
               "name": "StandardToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1055,
+              "referencedDeclaration": 1097,
               "src": "309:13:2",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_StandardToken_$1055",
+                "typeIdentifier": "t_contract$_StandardToken_$1097",
                 "typeString": "contract StandardToken"
               }
             },
-            "id": 484,
+            "id": 526,
             "nodeType": "InheritanceSpecifier",
             "src": "309:13:2"
           }
         ],
         "contractDependencies": [
-          752,
-          795,
-          824,
-          1055
+          794,
+          837,
+          866,
+          1097
         ],
         "contractKind": "contract",
         "documentation": "@title Creation of a CollabonateCoin, which could be used to power the Collabonate system\n@dev This coin could be required to make donations and be rewarded for participation in the network.",
         "fullyImplemented": true,
-        "id": 523,
+        "id": 565,
         "linearizedBaseContracts": [
-          523,
-          1055,
-          752,
-          795,
-          824
+          565,
+          1097,
+          794,
+          837,
+          866
         ],
         "name": "CollabonateCoin",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 487,
+            "id": 529,
             "name": "symbol",
             "nodeType": "VariableDeclaration",
-            "scope": 523,
+            "scope": 565,
             "src": "327:29:2",
             "stateVariable": true,
             "storageLocation": "default",
@@ -999,7 +999,7 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 485,
+              "id": 527,
               "name": "string",
               "nodeType": "ElementaryTypeName",
               "src": "327:6:2",
@@ -1011,7 +1011,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "434f4c4c",
-              "id": 486,
+              "id": 528,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -1030,10 +1030,10 @@
           },
           {
             "constant": false,
-            "id": 490,
+            "id": 532,
             "name": "name",
             "nodeType": "VariableDeclaration",
-            "scope": 523,
+            "scope": 565,
             "src": "360:38:2",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1042,7 +1042,7 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 488,
+              "id": 530,
               "name": "string",
               "nodeType": "ElementaryTypeName",
               "src": "360:6:2",
@@ -1054,7 +1054,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "436f6c6c61626f6e617465436f696e",
-              "id": 489,
+              "id": 531,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -1073,10 +1073,10 @@
           },
           {
             "constant": false,
-            "id": 493,
+            "id": 535,
             "name": "decimals",
             "nodeType": "VariableDeclaration",
-            "scope": 523,
+            "scope": 565,
             "src": "402:26:2",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1085,7 +1085,7 @@
               "typeString": "uint8"
             },
             "typeName": {
-              "id": 491,
+              "id": 533,
               "name": "uint8",
               "nodeType": "ElementaryTypeName",
               "src": "402:5:2",
@@ -1097,7 +1097,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "3138",
-              "id": 492,
+              "id": 534,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -1116,14 +1116,14 @@
           },
           {
             "body": {
-              "id": 521,
+              "id": 563,
               "nodeType": "Block",
               "src": "467:118:2",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 508,
+                    "id": 550,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1132,34 +1132,34 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 496,
+                        "id": 538,
                         "name": "balances",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 688,
+                        "referencedDeclaration": 730,
                         "src": "473:8:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                           "typeString": "mapping(address => uint256)"
                         }
                       },
-                      "id": 499,
+                      "id": 541,
                       "indexExpression": {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 497,
+                          "id": 539,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1070,
+                          "referencedDeclaration": 1112,
                           "src": "482:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 498,
+                        "id": 540,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1192,7 +1192,7 @@
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 507,
+                      "id": 549,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1200,7 +1200,7 @@
                       "leftExpression": {
                         "argumentTypes": null,
                         "hexValue": "31303030",
-                        "id": 500,
+                        "id": 542,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1226,7 +1226,7 @@
                               "typeIdentifier": "t_uint256",
                               "typeString": "uint256"
                             },
-                            "id": 505,
+                            "id": 547,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -1234,7 +1234,7 @@
                             "leftExpression": {
                               "argumentTypes": null,
                               "hexValue": "3130",
-                              "id": 501,
+                              "id": 543,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -1256,11 +1256,11 @@
                               "arguments": [
                                 {
                                   "argumentTypes": null,
-                                  "id": 503,
+                                  "id": 545,
                                   "name": "decimals",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 493,
+                                  "referencedDeclaration": 535,
                                   "src": "518:8:2",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_uint8",
@@ -1275,7 +1275,7 @@
                                     "typeString": "uint8"
                                   }
                                 ],
-                                "id": 502,
+                                "id": 544,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": true,
@@ -1288,7 +1288,7 @@
                                 },
                                 "typeName": "uint256"
                               },
-                              "id": 504,
+                              "id": 546,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -1309,7 +1309,7 @@
                             }
                           }
                         ],
-                        "id": 506,
+                        "id": 548,
                         "isConstant": false,
                         "isInlineArray": false,
                         "isLValue": false,
@@ -1334,25 +1334,25 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 509,
+                  "id": 551,
                   "nodeType": "ExpressionStatement",
                   "src": "473:55:2"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 519,
+                    "id": 561,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 510,
+                      "id": 552,
                       "name": "totalSupply",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 799,
+                      "referencedDeclaration": 841,
                       "src": "534:11:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1367,7 +1367,7 @@
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 518,
+                      "id": 560,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1375,7 +1375,7 @@
                       "leftExpression": {
                         "argumentTypes": null,
                         "hexValue": "31303030",
-                        "id": 511,
+                        "id": 553,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1401,7 +1401,7 @@
                               "typeIdentifier": "t_uint256",
                               "typeString": "uint256"
                             },
-                            "id": 516,
+                            "id": 558,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -1409,7 +1409,7 @@
                             "leftExpression": {
                               "argumentTypes": null,
                               "hexValue": "3130",
-                              "id": 512,
+                              "id": 554,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -1431,11 +1431,11 @@
                               "arguments": [
                                 {
                                   "argumentTypes": null,
-                                  "id": 514,
+                                  "id": 556,
                                   "name": "decimals",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 493,
+                                  "referencedDeclaration": 535,
                                   "src": "570:8:2",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_uint8",
@@ -1450,7 +1450,7 @@
                                     "typeString": "uint8"
                                   }
                                 ],
-                                "id": 513,
+                                "id": 555,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": true,
@@ -1463,7 +1463,7 @@
                                 },
                                 "typeName": "uint256"
                               },
-                              "id": 515,
+                              "id": 557,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -1484,7 +1484,7 @@
                             }
                           }
                         ],
-                        "id": 517,
+                        "id": 559,
                         "isConstant": false,
                         "isInlineArray": false,
                         "isLValue": false,
@@ -1509,14 +1509,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 520,
+                  "id": 562,
                   "nodeType": "ExpressionStatement",
                   "src": "534:46:2"
                 }
               ]
             },
             "documentation": null,
-            "id": 522,
+            "id": 564,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -1524,26 +1524,26 @@
             "name": "CollabonateCoin",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 494,
+              "id": 536,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "457:2:2"
             },
             "payable": false,
             "returnParameters": {
-              "id": 495,
+              "id": 537,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "467:0:2"
             },
-            "scope": 523,
+            "scope": 565,
             "src": "433:152:2",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 524,
+        "scope": 566,
         "src": "281:306:2"
       }
     ],
@@ -1555,5 +1555,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-08-21T21:35:27.539Z"
+  "updatedAt": "2018-08-21T22:00:20.712Z"
 }

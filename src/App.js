@@ -79,6 +79,9 @@ class App extends Component {
           manager: summary[5],
           infoKey: summary[6],
           requestDaysDeadline: summary[7],
+          title: summary[8],
+          goal: summary[9],
+          category: summary[10],
           campaignInstance
         };
       }

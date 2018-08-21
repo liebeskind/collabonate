@@ -37,6 +37,9 @@ class CampaignCard extends Component {
 			minimumContribution,
 			requestsCount,
 			contributorsCount,
+			goal,
+			title,
+			category,
 			infoKey
 		} = this.props.contractInfo;
 
@@ -47,7 +50,15 @@ class CampaignCard extends Component {
 				style={styles.campaignContainer}
 				onClick={() => this.props.showCampaignClicked(address)}
 			>
+				<Card.Content>
+					<Card.Header>{title}</Card.Header>
+					<Card.Meta>{category}</Card.Meta>
+				</Card.Content>
 				<Card.Content extra>
+					<span>
+						<Icon name="money" />
+						Goal: {goal * 1} ETH
+					</span>
 					<span style={styles.floatRight}>
 						<Icon name="gift" />
 						Raised:{" "}
