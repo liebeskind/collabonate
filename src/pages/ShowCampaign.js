@@ -105,7 +105,13 @@ class ShowCampaign extends Component {
 										{requestDaysDeadline} days
 									</h4>
 
-									<Button fluid secondary>
+									<Button
+										onClick={() =>
+											this.showRequestList(address)
+										}
+										fluid
+										secondary
+									>
 										View Requests
 									</Button>
 								</Segment>

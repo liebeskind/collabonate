@@ -9,6 +9,7 @@ import getWeb3 from "./utils/getWeb3";
 import CampaignCard from "./components/CampaignCard";
 import NewCampaign from "./pages/NewCampaign";
 import ShowCampaign from "./pages/ShowCampaign";
+import RequestList from "./pages/RequestList";
 
 import styles from "./styles/commonStyles";
 
@@ -24,7 +25,9 @@ class App extends Component {
     this.state = {
       campaigns: {},
       web3: null,
-      showCreateCampaign: false
+      showCreateCampaign: false,
+      showRequestList: false,
+      showCampaign: false
     };
   }
 
@@ -81,20 +84,46 @@ class App extends Component {
   }
 
   createNewCampaign = () => {
-    this.setState({ showCreateCampaign: true, showCampaign: false });
+    this.setState({
+      showCreateCampaign: true,
+      showCampaign: false,
+      showRequestList: false
+    });
   };
 
   showCampaign = address => {
-    this.setState({ showCreateCampaign: false, showCampaign: address });
+    this.setState({
+      showCreateCampaign: false,
+      showCampaign: address,
+      showRequestList: false
+    });
+  };
+
+  showRequestList = address => {
+    this.setState({
+      showCreateCampaign: false,
+      showCampaign: false,
+      showRequestList: address
+    });
   };
 
   campaignCreated = () => {
-    this.setState({ showCreateCampaign: false, showCampaign: false });
+    this.setState({
+      showCreateCampaign: false,
+      showCampaign: false,
+      showRequestList: false
+    });
     window.location.reload(true);
   };
 
   render() {
-    const { campaigns, showCampaign, showCreateCampaign, web3 } = this.state;
+    const {
+      campaigns,
+      showCampaign,
+      showCreateCampaign,
+      web3,
+      showRequestList
+    } = this.state;
 
     return (
       <div className="App">
@@ -111,6 +140,7 @@ class App extends Component {
 
               {showCampaign && (
                 <ShowCampaign
+                  showRequestList={this.showRequestList}
                   balance={
                     web3.fromWei(campaigns[showCampaign].balance, "ether") * 1
                   }
@@ -132,6 +162,15 @@ class App extends Component {
               )}
               {showCreateCampaign && (
                 <NewCampaign campaignCreated={this.campaignCreated} />
+              )}
+
+              {showRequestList && (
+                <RequestList
+                  campaignInstance={campaigns[showRequestList].campaignInstance}
+                  requestsCount={campaigns[showCampaign].requestsCount * 1}
+                  address={campaigns[showCampaign].address}
+                  manager={campaigns[showCampaign].manager}
+                />
               )}
 
               {!showCreateCampaign &&
