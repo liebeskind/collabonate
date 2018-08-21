@@ -168,4 +168,8 @@ contract Campaign {
         );
     }
 
+    function getRequestCount() public view returns(uint) {
+        return requests.length;
+    }
+
 }

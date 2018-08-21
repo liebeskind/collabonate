@@ -33,12 +33,7 @@ class RequestList extends Component {
 	getRequests = async campaignInstance => {
 		// const { address } = props.query;
 		// const campaign = Campaign(address);
-		const requestCount = await campaignInstance.methods
-			.getRequestCount()
-			.call();
-		const approversCount = await campaignInstance.methods
-			.approversCount()
-			.call();
+		const requestCount = await campaignInstance.getRequestCount.call();
 
 		const requests = await Promise.all(
 			Array(parseInt(requestCount))
@@ -54,7 +49,7 @@ class RequestList extends Component {
 
 	renderRows() {
 		const { address, contributorsCount, campaignInstance } = this.props;
-		return this.props.requests.map((request, index) => {
+		return this.state.requests.map((request, index) => {
 			return (
 				<RequestRow
 					key={index}
