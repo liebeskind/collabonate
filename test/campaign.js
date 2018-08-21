@@ -18,6 +18,9 @@ contract("Campaign", async accounts => {
 			minimumContribution,
 			"TestKey",
 			0,
+			"Example Title",
+			300,
+			"Category",
 			{
 				from: accounts[0]
 			}
@@ -34,6 +37,9 @@ contract("Campaign", async accounts => {
 			minimumContribution,
 			"TestKey",
 			5,
+			"Example Title",
+			300,
+			"Category",
 			{
 				from: accounts[0]
 			}

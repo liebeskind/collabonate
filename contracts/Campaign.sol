@@ -50,7 +50,7 @@ contract Campaign {
       * @param goalInput is set by the manager when first creating the campaign.  This is the funding goal for the campaign.
 	    * @param categoryInput is set by the manager when first creating the campaign.
     */
-    constructor(uint minimum, address creator, string databaseKey, uint requestDays, uint titleInput, uint goalInput, string categoryInput) public {
+    constructor(uint minimum, address creator, string databaseKey, uint requestDays, string titleInput, uint goalInput, string categoryInput) public {
         manager = creator;
         minimumContribution = minimum;
         infoKey = databaseKey;
@@ -164,7 +164,7 @@ contract Campaign {
       * @dev Returns a summary of the campaign
     */
     function getSummary() public view returns(
-        uint, uint, uint, uint, uint, address, string, uint
+        uint, uint, uint, uint, uint, address, string, uint, string, uint, string
     ) { // Not changing in data, so 'view'
         return (
             minimumContribution,
@@ -174,7 +174,10 @@ contract Campaign {
             totalContributions,
             manager,
             infoKey,
-            requestDaysDeadline
+            requestDaysDeadline,
+            title, 
+            goal, 
+            category
         );
     }
 
