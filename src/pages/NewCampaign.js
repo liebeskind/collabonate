@@ -58,7 +58,6 @@ class CampaignNew extends Component {
 
 	onSubmit = async basicInfo => {
 		const { web3, campaignFactoryInstance, accounts } = this.state;
-		console.log(basicInfo);
 		this.setState({ loading: true, errorMessage: "" });
 		try {
 			await campaignFactoryInstance.createCampaign(

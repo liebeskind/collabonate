@@ -19,7 +19,7 @@ class RequestList extends Component {
 				});
 
 				// Get current account info
-				results.web3.eth.getAccounts().then(accounts => {
+				this.state.web3.eth.getAccounts(async (error, accounts) => {
 					this.setState({ currentAccount: accounts[0] });
 				});
 			})

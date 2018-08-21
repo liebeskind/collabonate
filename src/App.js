@@ -178,7 +178,8 @@ class App extends Component {
               )}
 
               {!showCreateCampaign &&
-                !showCampaign && (
+                !showCampaign &&
+                !showRequestList && (
                   <div>
                     <Button
                       content="Create a new campaign"
