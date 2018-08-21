@@ -14,8 +14,8 @@ contract CampaignFactory {
       * @param minimum amount necessary for contribution
       * @param databaseKey key used to identify this campaign in centralized database / IPFS
     */
-    function createCampaign(uint minimum, string databaseKey, uint requestDays) public {
-        address newCampaign = new Campaign(minimum, msg.sender, databaseKey, requestDays);
+    function createCampaign(uint minimum, string databaseKey, uint requestDays, string title, uint goal, string category) public {
+        address newCampaign = new Campaign(minimum, msg.sender, databaseKey, requestDays, title, goal, category);
         deployedCampaigns.push(newCampaign);
     }
     

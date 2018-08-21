@@ -86,6 +86,7 @@ class CampaignNew extends Component {
 			<BasicInfoForm
 				basicInfo={this.state.basicInfo}
 				basicInfoSubmitted={this.basicInfoSubmitted}
+				loading={this.state.loading}
 			/>
 		);
 	};

@@ -15,6 +15,7 @@ module.exports = {
 			port: 9545
 		},
 		rinkeby: {
+			// Used truffle and HDWalletProvider (infura) instead of geth.
 			provider: new HDWalletProvider(
 				mnemonic,
 				"https://rinkeby.infura.io/" + infura_apikey

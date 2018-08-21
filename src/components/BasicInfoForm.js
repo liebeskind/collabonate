@@ -47,7 +47,7 @@ class NewBasicInfoForm extends Component {
 						}
 					/>
 				</Form.Field>
-				<Button floated="right" loading={this.state.loading} primary>
+				<Button floated="right" loading={this.props.loading} primary>
 					Create Campaign
 				</Button>
 			</Form>

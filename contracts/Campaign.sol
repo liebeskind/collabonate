@@ -10,7 +10,10 @@ contract Campaign {
     uint public totalContributions; // Track total contributions, which will differ from this.balance if funds are distributed.
     uint public contributorsCount; // How many contributors are there.  Less important than totalContributions, but still interesting.
     uint public requestDaysDeadline; // Set by the manager when first creating the campaign.  It's known to contributors when they contribute.
-    bool private stopped = false;
+    string public title; // Set by the manager when first creating the campaign.
+    uint public goal; // Set by the manager when first creating the campaign.
+    string public category; // Set by the manager when first creating the campaign.
+    bool private stopped = false; // Circuit breaker
 
     // Requests are considered approved if complete === true && overNoLimit === false.  Denied if overNoLimit === true.
     struct Request {
@@ -42,14 +45,20 @@ contract Campaign {
       * @param minimum min amount contributor can contribute to this campaign.
       * @param creator address of the person creating the campaign.  Necessary because when using a factory, can't pull msg.sender directly.
 	    * @param databaseKey key that connects this campaign to external resource.  Probably IPFS for content storage.
-	    * @param requestDays is set by the manager when first creating the campaign and is known to contributors when they contribute.
+      * @param requestDays is set by the manager when first creating the campaign and is known to contributors when they contribute.
+      * @param titleInput is set by the manager when first creating the campaign.
+      * @param goalInput is set by the manager when first creating the campaign.  This is the funding goal for the campaign.
+	    * @param categoryInput is set by the manager when first creating the campaign.
     */
-    constructor(uint minimum, address creator, string databaseKey, uint requestDays) public {
+    constructor(uint minimum, address creator, string databaseKey, uint requestDays, uint titleInput, uint goalInput, string categoryInput) public {
         manager = creator;
         minimumContribution = minimum;
         infoKey = databaseKey;
         totalContributions = 0;
         requestDaysDeadline = requestDays;
+        title = titleInput;
+        goal = goalInput;
+        category = categoryInput;
     }
 
     // Circuit breaker functionality

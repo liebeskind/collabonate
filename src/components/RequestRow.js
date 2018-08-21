@@ -42,7 +42,7 @@ class RequestRow extends Component {
 
 	render() {
 		const { Row, Cell } = Table;
-		const { id, request } = this.props;
+		const { id, request, contributorsCount } = this.props;
 		const readyToFinalize = false;
 		// const readyToFinalize = request.approvalCount > contributorsCount / 2;
 		const { web3 } = this.state;
