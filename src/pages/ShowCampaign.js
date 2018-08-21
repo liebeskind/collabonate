@@ -47,96 +47,107 @@ class ShowCampaign extends Component {
 		const progress = (balanceEther / goal) * 1 * 100;
 
 		return (
-			<Segment>
-				<Grid relaxed padded stackable divided="vertically">
-					<Grid.Row>
-						<Grid.Column width={10}>
-							<Grid.Row>
-								<Card fluid>
-									<Card.Content>
-										<Card.Header>{title}</Card.Header>
-										<Card.Meta>{category}</Card.Meta>
-										<Card.Meta>
-											{`Progress: ${balanceEther} / ${goal *
-												1} ETH`}
-										</Card.Meta>
-									</Card.Content>
-								</Card>
-							</Grid.Row>
-						</Grid.Column>
-						<Grid.Column width={6}>
-							<Grid.Row>
-								<Segment>
-									<h2>
-										<strong>
-											Balance: {balanceEther * 1} ETH
-										</strong>
-									</h2>
-									<div>
-										Raised from {contributorsCount * 1}{" "}
-										contributors
-									</div>
-									<br />
-									<ContributeForm
-										minContribution={
-											minimumContribution * 1
-										}
-										navigateHome={this.props.navigateHome}
-										address={address * 1}
-										web3={web3}
-										campaignInstance={campaignInstance}
-									/>
-									<br />
-								</Segment>
-							</Grid.Row>
-							<br />
-							<Grid.Row>
-								<Segment>
-									<h3>
-										{requestsCount * 1} requests pending (
-										{balanceEther * 1} ETH balance)
-									</h3>
+			<div>
+				<Button
+					onClick={() => this.props.navigateHome(this.props.address)}
+				>
+					Back
+				</Button>
+				<Segment>
+					<Grid relaxed padded stackable divided="vertically">
+						<Grid.Row>
+							<Grid.Column width={10}>
+								<Grid.Row>
+									<Card fluid>
+										<Card.Content>
+											<Card.Header>{title}</Card.Header>
+											<Card.Meta>{category}</Card.Meta>
+											<Card.Meta>
+												{`Progress: ${balanceEther} / ${goal *
+													1} ETH`}
+											</Card.Meta>
+										</Card.Content>
+									</Card>
+								</Grid.Row>
+							</Grid.Column>
+							<Grid.Column width={6}>
+								<Grid.Row>
+									<Segment>
+										<h2>
+											<strong>
+												Balance: {balanceEther * 1} ETH
+											</strong>
+										</h2>
+										<div>
+											Raised from {contributorsCount * 1}{" "}
+											contributors
+										</div>
+										<br />
+										<ContributeForm
+											minContribution={
+												minimumContribution * 1
+											}
+											navigateHome={
+												this.props.navigateHome
+											}
+											address={address * 1}
+											web3={web3}
+											campaignInstance={campaignInstance}
+										/>
+										<br />
+									</Segment>
+								</Grid.Row>
+								<br />
+								<Grid.Row>
+									<Segment>
+										<h3>
+											{requestsCount * 1} requests pending
+											({balanceEther * 1} ETH balance)
+										</h3>
 
-									<h4>
-										Requests can be voted against for{" "}
-										{requestDaysDeadline * 1} days
-									</h4>
+										<h4>
+											Requests can be voted against for{" "}
+											{requestDaysDeadline * 1} days
+										</h4>
 
-									<Button
-										onClick={() =>
-											this.props.showRequestList(address)
-										}
-										fluid
-										secondary
-									>
-										View Requests
-									</Button>
-								</Segment>
-							</Grid.Row>
-							<br />
-							<Grid.Row>
-								<Card fluid>
-									<Card.Content>
-										<Card.Header>Manager</Card.Header>
-										<Card.Meta
-											style={{
-												overflowWrap: "break-word"
-											}}
+										<Button
+											onClick={() =>
+												this.props.showRequestList(
+													address
+												)
+											}
+											fluid
+											secondary
 										>
-											{manager}
-										</Card.Meta>
-										<Card.Description>
-											The Manager created this campaign
-											and can create requests to withdraw
-											money.
-										</Card.Description>
-									</Card.Content>
-								</Card>
-							</Grid.Row>
-						</Grid.Column>
-					</Grid.Row>
-				</Grid>
-			</Segment>
+											View Requests
+										</Button>
+									</Segment>
+								</Grid.Row>
+								<br />
+								<Grid.Row>
+									<Card fluid>
+										<Card.Content>
+											<Card.Header>Manager</Card.Header>
+											<Card.Meta
+												style={{
+													overflowWrap: "break-word"
+												}}
+											>
+												{manager}
+											</Card.Meta>
+											<Card.Description>
+												The Manager created this
+												campaign and can create requests
+												to withdraw money.
+											</Card.Description>
+										</Card.Content>
+									</Card>
+								</Grid.Row>
+							</Grid.Column>
+						</Grid.Row>
+					</Grid>
+				</Segment>
+			</div>
 		);
 	}
 }

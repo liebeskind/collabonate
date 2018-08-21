@@ -52,8 +52,12 @@ class RequestList extends Component {
 	};
 
 	renderRows() {
-		const { address, contributorsCount, campaignInstance } = this.props;
-		console.log(this.state.requests);
+		const {
+			address,
+			contributorsCount,
+			campaignInstance,
+			totalContributions
+		} = this.props;
 		return this.state.requests.map((request, index) => {
 			return (
 				<RequestRow
@@ -63,6 +67,8 @@ class RequestList extends Component {
 					address={address}
 					contributorsCount={contributorsCount}
 					campaignInstance={campaignInstance}
+					currentAccount={this.state.currentAccount}
+					totalContributions={totalContributions}
 				/>
 			);
 		});
@@ -74,6 +80,9 @@ class RequestList extends Component {
 
 		return (
 			<div>
+				<Button onClick={() => this.props.showCampaign(address)}>
+					Back
+				</Button>
 				<h3>Requests</h3>
 				<CreateRequestButton
 					currentAccount={this.state.currentAccount}
@@ -88,8 +97,8 @@ class RequestList extends Component {
 							<HeaderCell>Description</HeaderCell>
 							<HeaderCell>Amount</HeaderCell>
 							<HeaderCell>Recipient</HeaderCell>
-							<HeaderCell>Approval Count</HeaderCell>
-							<HeaderCell>Approve</HeaderCell>
+							<HeaderCell>% No Vote</HeaderCell>
+							<HeaderCell>Vote No</HeaderCell>
 							<HeaderCell>Finalize</HeaderCell>
 						</Row>
 					</Header>

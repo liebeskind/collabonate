@@ -182,6 +182,7 @@ class App extends Component {
                   totalContributions={
                     campaigns[showRequestList].totalContributions
                   }
+                  showCampaign={this.showCampaign}
                 />
               )}
 

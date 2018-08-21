@@ -4,7 +4,9 @@ import getWeb3 from "../utils/getWeb3";
 
 class RequestRow extends Component {
 	state = {
-		web3: null
+		web3: null,
+		votedNo: false,
+		loading: false
 	};
 
 	componentWillMount() {
@@ -22,12 +24,33 @@ class RequestRow extends Component {
 			});
 	}
 
-	onApprove = async () => {
+	onVoteNo = async () => {
 		// // Will be async because will have to reach out to campaign and attempt to reference a given request and approve it.
-		// const accounts = await web3.eth.getAccounts();
-		// await this.props.campaignInstance.methods
-		// 	.approveRequest(this.props.id)
-		// 	.send({ from: accounts[0] });
+		const { campaignInstance, currentAccount, id } = this.props;
+		this.setState({ loading: true });
+		try {
+			this.props.campaignInstance
+				.voteNo(id, {
+					from: currentAccount
+				})
+				.then(err => {
+					this.setState({
+						loading: false,
+						votedNo: true
+					});
+				})
+				.catch(err => {
+					this.setState({
+						loading: false,
+						errorMessage: err.message
+					});
+				});
+		} catch (err) {
+			this.setState({
+				loading: false,
+				errorMessage: err
+			});
+		}
 	};
 
 	onFinalize = async () => {
@@ -42,10 +65,15 @@ class RequestRow extends Component {
 
 	render() {
 		const { Row, Cell } = Table;
-		const { id, request, contributorsCount } = this.props;
+		const {
+			id,
+			request,
+			contributorsCount,
+			totalContributions
+		} = this.props;
 		const readyToFinalize = false;
 		// const readyToFinalize = request.approvalCount > contributorsCount / 2;
-		const { web3 } = this.state;
+		const { web3, loading } = this.state;
 
 		return (
 			<Row
@@ -58,11 +86,22 @@ class RequestRow extends Component {
 					{web3 ? web3.fromWei(request.value, "ether") : "NA"}
 				</Cell>
 				<Cell>{request.recipient}</Cell>
-				<Cell>{contributorsCount}</Cell>
 				<Cell>
-					{request.complete ? null : (
-						<Button color="green" basic onClick={this.onApprove}>
-							Approve
+					{(
+						(request.noVoteContributionTotal / totalContributions) *
+						100
+					).toFixed(0)}
+					%
+				</Cell>
+				<Cell>
+					{request.complete ? null : ( // Should also check to see if this account is a contributor.
+						<Button
+							color="green"
+							basic
+							onClick={this.onVoteNo}
+							loading={loading}
+						>
+							Vote No
 						</Button>
 					)}
 				</Cell>
