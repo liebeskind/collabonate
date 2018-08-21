@@ -57,7 +57,8 @@ class ShowCampaign extends Component {
 										<Card.Header>{title}</Card.Header>
 										<Card.Meta>{category}</Card.Meta>
 										<Card.Meta>
-											{`Goal: ${goal * 1} ETH`}
+											{`Progress: ${balanceEther} / ${goal *
+												1} ETH`}
 										</Card.Meta>
 									</Card.Content>
 								</Card>
@@ -68,7 +69,7 @@ class ShowCampaign extends Component {
 								<Segment>
 									<h2>
 										<strong>
-											Balance: {balance * 1} ETH
+											Balance: {balanceEther * 1} ETH
 										</strong>
 									</h2>
 									<div>
@@ -80,6 +81,7 @@ class ShowCampaign extends Component {
 										minContribution={
 											minimumContribution * 1
 										}
+										navigateHome={this.props.navigateHome}
 										address={address * 1}
 										web3={web3}
 										campaignInstance={campaignInstance}
@@ -92,7 +94,7 @@ class ShowCampaign extends Component {
 								<Segment>
 									<h3>
 										{requestsCount * 1} requests pending (
-										{balance * 1} ETH balance)
+										{balanceEther * 1} ETH balance)
 									</h3>
 
 									<h4>

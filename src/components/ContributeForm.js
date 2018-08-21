@@ -37,16 +37,19 @@ class ContributeForm extends Component {
 
 		try {
 			web3.eth.getAccounts((error, accounts) => {
-				campaignInstance.contribute({
-					from: accounts[0],
-					value: valueToSend
-				});
+				campaignInstance
+					.contribute({
+						from: accounts[0],
+						value: valueToSend
+					})
+					.then(error => {
+						this.setState({ loading: false, value: "" });
+						this.props.navigateHome();
+					});
 			});
 		} catch (err) {
-			this.setState({ errorMessage: err.message });
+			this.setState({ errorMessage: err.message, loading: false });
 		}
-
-		this.setState({ loading: false, value: "" });
 	};
 
 	render() {

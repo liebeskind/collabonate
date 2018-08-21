@@ -116,7 +116,7 @@ class App extends Component {
     });
   };
 
-  campaignCreated = () => {
+  navigateHome = () => {
     this.setState({
       showCreateCampaign: false,
       showCampaign: false,
@@ -165,10 +165,11 @@ class App extends Component {
                     web3.fromWei(campaigns[showCampaign].balance, "ether") * 1
                   }
                   contractInfo={campaigns[showCampaign]}
+                  navigateHome={this.navigateHome}
                 />
               )}
               {showCreateCampaign && (
-                <NewCampaign campaignCreated={this.campaignCreated} />
+                <NewCampaign campaignCreated={this.navigateHome} />
               )}
 
               {showRequestList && (
