@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Card, Icon, Grid, Button, Image, Segment } from "semantic-ui-react";
 import getWeb3 from "../utils/getWeb3";
-// import ContributeForm from "../../components/ContributeForm";
-import { Link } from "react-router-dom";
+import ContributeForm from "../components/ContributeForm";
 
 class ShowCampaign extends Component {
 	constructor(props) {
@@ -54,7 +53,8 @@ class ShowCampaign extends Component {
 			minimumContribution,
 			requestsCount,
 			contributorsCount,
-			infoKey
+			infoKey,
+			campaignInstance
 		} = this.props;
 
 		const { web3 } = this.state;
@@ -80,6 +80,14 @@ class ShowCampaign extends Component {
 									<div>
 										Raised by {contributorsCount} people
 									</div>
+									<br />
+									<ContributeForm
+										minContribution={minimumContribution}
+										address={address}
+										web3={web3}
+										campaignInstance={campaignInstance}
+									/>
+									<br />
 								</Segment>
 							</Grid.Row>
 							<br />

@@ -72,7 +72,8 @@ class App extends Component {
           contributorsCount: summary[3],
           manager: summary[4],
           infoKey: summary[5],
-          requestDaysDeadline: summary[6]
+          requestDaysDeadline: summary[6],
+          campaignInstance
         };
       }
       this.setState({ campaigns });
@@ -116,6 +117,7 @@ class App extends Component {
                     campaigns[showCampaign].contributorsCount * 1
                   }
                   infoKey={campaigns[showCampaign].infoKey}
+                  campaignInstance={campaigns[showCampaign].campaignInstance}
                 />
               )}
               {showCreateCampaign && <NewCampaign />}
