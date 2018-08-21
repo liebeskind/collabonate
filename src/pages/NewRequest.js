@@ -43,13 +43,24 @@ class RequestNew extends Component {
 		} = this.state;
 
 		this.setState({ loading: true, errorMessage: "" });
+
 		const valueToRequest = web3.toWei(value, "ether");
+		console.log(description);
+		console.log(valueToRequest);
+		console.log(recipient);
+		console.log(currentAccount);
 		try {
-			await campaignInstance
-				.createRequest(description, valueToRequest, recipient)
-				.send({ from: currentAccount });
-			this.setState({ loading: false });
-			this.props.showRequestList(address);
+			// web3.eth.getAccounts((error, accounts) => {
+			campaignInstance.createRequest(
+				description,
+				valueToRequest,
+				recipient,
+				"Test Key",
+				{
+					from: currentAccount
+				}
+			);
+			// });
 		} catch (err) {
 			this.setState({ loading: false, errorMessage: err.message });
 		}

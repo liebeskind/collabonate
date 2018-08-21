@@ -31,24 +31,29 @@ class RequestList extends Component {
 	}
 
 	getRequests = async campaignInstance => {
-		// const { address } = props.query;
-		// const campaign = Campaign(address);
 		const requestCount = await campaignInstance.getRequestCount.call();
 
-		const requests = await Promise.all(
-			Array(parseInt(requestCount))
-				.fill() // Gives a list of indices that we want to request from 0 to requestCount.
-				.map((element, index) => {
-					// Map over each index.
-					return campaignInstance.methods.requests(index).call(); // Retrieve a given individual request at given index.
-				})
-		);
-
+		let requests = [];
+		for (var i = 0; i < requestCount; i++) {
+			const fetched = await campaignInstance.requests.call(i);
+			requests.push({
+				description: fetched[0],
+				value: fetched[1] * 1,
+				recipient: fetched[2],
+				complete: fetched[3],
+				overNoLimit: fetched[4],
+				databaseKey: fetched[5],
+				noVoteContributionTotal: fetched[6] * 1,
+				createdTimestamp: fetched[7] * 1
+			});
+		}
+		console.log(requests);
 		this.setState({ requests });
 	};
 
 	renderRows() {
 		const { address, contributorsCount, campaignInstance } = this.props;
+		console.log(this.state.requests);
 		return this.state.requests.map((request, index) => {
 			return (
 				<RequestRow

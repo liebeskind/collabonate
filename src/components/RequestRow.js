@@ -53,7 +53,9 @@ class RequestRow extends Component {
 			>
 				<Cell>{id}</Cell>
 				<Cell>{request.description}</Cell>
-				<Cell>{web3.fromWei(request.value, "ether")}</Cell>
+				<Cell>
+					{web3 ? web3.fromWei(request.value, "ether") : "NA"}
+				</Cell>
 				<Cell>{request.recipient}</Cell>
 				<Cell>
 					{request.approvalCount}/{contributorsCount}
