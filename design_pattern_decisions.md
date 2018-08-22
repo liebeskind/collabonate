@@ -1,7 +1,7 @@
 # Design Patterns
 
 -   Use of a factory vs. calling Campaign contract directly.  
-    This makes it possible to have an array of campaign addreses, which are used to populate the Campaigns dashboard.
+    This makes it possible to have an array of campaign addresses, which are used to populate the Campaigns dashboard.
 
 -   Fail early, fail loud. All functions check the conditions required for execution at the beginning of the function call.
 
@@ -10,10 +10,10 @@
 -   Voting on requests based on total contribution rather than each address getting 1 vote.  
     This prevents an attack where someone creates thousands of accounts and contributes 1 wei per account. Basing 'no votes' on contribution power ensures that contributors have skin in the game.
 
--   The account that creates a campaign is set to the manager property of that campaign. Managers have many function privelages, but can't affect campaigns of which they are not the manager. Managers also are limited in their ability to call functions outside the scope of their management responsibilities. For example, managers can not contribute funds on another account's behalf.
+-   The account that creates a campaign is set to the manager property of that campaign. Managers have many function privileges, but can't affect campaigns of which they are not the manager. Managers also are limited in their ability to call functions outside the scope of their management responsibilities. For example, managers can not contribute funds on another account's behalf.
 
 -   Storing campaign descriptions, request description and recipient address on the blockchain and not allowing alterations.  
-    Prevents a manager for raising money for one purpose, then changin that purpose. Important because the contributors are effectively stakeholders of the campaign.
+    Prevents a manager for raising money for one purpose, then changing that purpose. Important because the contributors are effectively stakeholders of the campaign.
 
 -   Set the # of days where contributors can 'vote no' to requests when first create campaign and make it immutable.  
     Contributors should know the timeline for 'no votes' when they first contribute to the campaign. By having it immutable, they can rest assure that they'll have time to vote against request. If they contribute to a campaign where the timeline is short, they may not care much about voting no for that particular campaign.

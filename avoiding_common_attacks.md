@@ -8,7 +8,7 @@ An attack where a malicious external contract can be created to recursively call
 
 #### Collabonate Solution
 
--   Contributor accounts cannot withdraw funds from a campaign. The only user that can ever withdraw funds is a campaign manager, but they are only able to do so after a Request Timeline window. Funds are sent to a non-manager account programatically and all users of the system can see where those funds are sent. Funds are sent using request.recipient.transfer(ETH).
+-   Contributor accounts cannot withdraw funds from a campaign. The only user that can ever withdraw funds is a campaign manager, but they are only able to do so after a Request Timeline window. Funds are sent to a non-manager account programmatically and all users of the system can see where those funds are sent. Funds are sent using request.recipient.transfer(ETH).
 
 ### Overflow/Underflow of Integers
 

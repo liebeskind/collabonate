@@ -43,7 +43,7 @@ Contributors can contribute to a campaign and send wei/eth to the smart contract
 
 Anytime a campaign manager wants to use funds raised in a campaign and held in a Smart Contract, they must submit a request to the campaign contributors (stakeholders). This request includes a proposed use and a destination Ethereum address. Contributors can 'vote no' to the request at any time during the Request Timeline.
 
-Contributors can vote against the request and the request is considered ‘denied’ if, at any time during the Request Timeline, accounts responsible for 15% of the total contributions vote against it. If the proposed request is not denied at the end of the Request Timeline, the campaign manager finalize the request and the funds are sent programatically to the destination Ethereum address.
+Contributors can vote against the request and the request is considered ‘denied’ if, at any time during the Request Timeline, accounts responsible for 15% of the total contributions vote against it. If the proposed request is not denied at the end of the Request Timeline, the campaign manager finalize the request and the funds are sent programmatically to the destination Ethereum address.
 
 ## Libraries Used (Via EthPM)
 
@@ -53,7 +53,7 @@ SafeMath is imported into the Campaign contract and is used to prevent overflow 
 
 -   App integrates with Metamask using Web3.
 -   Recognizes current account and shows current account contribution amounts, current account no-votes, and differentiates between accounts that are managers of a campaign, contributors, or haven't contributed. The app also tracks how much an account has contributed and many other states of an account.
--   Switching account via Metamask updates the UI to reflec the state/permissions of the current account. If on the Campaign page and switch to manager account, the UI becomes the manager view.
+-   Switching account via Metamask updates the UI to reflect the state/permissions of the current account. If on the Campaign page and switch to manager account, the UI becomes the manager view.
 -   All Campaign contract functions (including many variable calls) are called by the frontend via web3.
 -   The state of the UI changes on each contract state change.
 -   App is fully deployed to https://collabonate.herokuapp.com/
