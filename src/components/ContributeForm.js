@@ -63,6 +63,7 @@ class ContributeForm extends Component {
 							.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
 						Wei Minimum)
 					</label>
+
 					<Input
 						value={this.state.value}
 						onChange={event =>
@@ -71,6 +72,14 @@ class ContributeForm extends Component {
 						label="ETH"
 						labelPosition="right"
 					/>
+					<label>
+						{this.props.amountCurrentAccountContributed
+							? `Your account has already contributed ${this.state.web3.fromWei(
+									this.props.amountCurrentAccountContributed,
+									"ether"
+							  )} ETH`
+							: "Your account has not yet contributed"}
+					</label>
 				</Form.Field>
 				<Message
 					header="Adding to Ethereum Blockchain"

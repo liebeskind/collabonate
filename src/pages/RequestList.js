@@ -22,6 +22,7 @@ class RequestList extends Component {
 				// Get current account info
 				this.state.web3.eth.getAccounts(async (error, accounts) => {
 					this.setState({ currentAccount: accounts[0] });
+					this.getCampaignContribution(accounts[0]);
 				});
 			})
 			.catch(() => {
@@ -29,16 +30,14 @@ class RequestList extends Component {
 			});
 
 		this.getRequests(this.props.campaignInstance);
-		this.getCampaignContribution();
 	}
 
-	getCampaignContribution = async () => {
+	getCampaignContribution = async account => {
 		const contributed = await this.props.campaignInstance.getContributionAmount(
-			this.props.currentAccount
+			account
 		);
-		console.log(contributed);
 		this.setState({
-			amountCurrentAccountContributed: contributed
+			amountCurrentAccountContributed: contributed * 1
 		});
 	};
 
@@ -92,6 +91,7 @@ class RequestList extends Component {
 	render() {
 		const { Header, Row, HeaderCell, Body } = Table;
 		const { manager, address, requestCount } = this.props;
+		const { web3, amountCurrentAccountContributed } = this.state;
 
 		return (
 			<div>
@@ -99,10 +99,20 @@ class RequestList extends Component {
 					Back
 				</Button>
 				<h3>Requests</h3>
-				<h4>
-					Amount Current Account Contributed:{" "}
-					{this.state.amountCurrentAccountContributed}
-				</h4>
+				{manager ? (
+					<h4>Your account is the manager of this campaign</h4>
+				) : (
+					<h4>
+						Amount your account has contributed to this campaign:{" "}
+						{web3
+							? web3.fromWei(
+									amountCurrentAccountContributed,
+									"ether"
+							  )
+							: "Loading"}{" "}
+						ETH
+					</h4>
+				)}
 				<CreateRequestButton
 					currentAccount={this.state.currentAccount}
 					manager={manager}

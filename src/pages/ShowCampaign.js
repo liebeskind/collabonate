@@ -23,21 +23,20 @@ class ShowCampaign extends Component {
 				// Get current account info
 				this.state.web3.eth.getAccounts(async (error, accounts) => {
 					this.setState({ currentAccount: accounts[0] });
+					this.getCampaignContribution(accounts[0]);
 				});
 			})
 			.catch(() => {
 				console.log("Error finding web3.");
 			});
-		this.getCampaignContribution();
 	}
 
-	getCampaignContribution = async () => {
+	getCampaignContribution = async account => {
 		const contributed = await this.props.contractInfo.campaignInstance.getContributionAmount(
-			this.state.currentAccount
+			account
 		);
-		console.log(contributed);
 		this.setState({
-			amountCurrentAccountContributed: contributed
+			amountCurrentAccountContributed: contributed * 1
 		});
 	};
 
@@ -58,7 +57,7 @@ class ShowCampaign extends Component {
 			requestDaysDeadline
 		} = this.props.contractInfo;
 
-		const { web3 } = this.state;
+		const { web3, amountCurrentAccountContributed } = this.state;
 
 		const balanceEther = web3 ? web3.fromWei(balance * 1, "ether") : 0;
 		const progress = (balanceEther / goal) * 1 * 100;
@@ -110,6 +109,9 @@ class ShowCampaign extends Component {
 											address={address * 1}
 											web3={web3}
 											campaignInstance={campaignInstance}
+											amountCurrentAccountContributed={
+												amountCurrentAccountContributed
+											}
 										/>
 										<br />
 									</Segment>
