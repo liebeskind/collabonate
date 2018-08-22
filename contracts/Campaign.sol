@@ -195,4 +195,9 @@ contract Campaign {
       return contributors[contributor];
     }
 
+    function getRequestNoVotes(uint256 index, address contributor) public view returns(bool) {
+        Request request = requests[index];  // Use memory so not changing state.
+        return request.noVotes[contributor];
+    }
+
 }

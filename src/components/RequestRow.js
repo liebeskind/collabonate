@@ -30,8 +30,9 @@ class RequestRow extends Component {
 	}
 
 	getNoVotes = async () => {
-		const votedNo = await this.props.campaignInstance.getNoVotes(
-			this.props.address
+		const votedNo = await this.props.campaignInstance.getRequestNoVotes(
+			this.props.id,
+			this.props.currentAccount
 		);
 		this.setState({ votedNo });
 	};
@@ -135,7 +136,7 @@ class RequestRow extends Component {
 						<div>Over No Limit</div> // Should also check to see if this account is a contributor.
 					) : request.complete ? (
 						<div>Request Complete</div>
-					) : request.noVotes[this.props.currentAccount] ? ( // Need to add getter to the contract
+					) : this.state.votedNo ? ( // Need to add getter to the contract
 						<div>Already Voted No</div> // Should also check to see if this account is a contributor.
 					) : isManager ? (
 						<div>Managers Can't Vote</div>
