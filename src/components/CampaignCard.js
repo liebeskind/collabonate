@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-	Card,
-	Segment,
-	Image,
-	Button,
-	Icon,
-	Dimmer,
-	Loader
-} from "semantic-ui-react";
+import { Card, Button, Icon } from "semantic-ui-react";
 import getWeb3 from "../utils/getWeb3";
 
 import styles from "../styles/commonStyles";
@@ -33,14 +25,11 @@ class CampaignCard extends Component {
 		const {
 			balance,
 			address,
-			manager,
-			minimumContribution,
 			requestsCount,
 			contributorsCount,
 			goal,
 			title,
-			category,
-			infoKey
+			category
 		} = this.props.contractInfo;
 
 		const { web3 } = this.state;

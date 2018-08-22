@@ -84,23 +84,25 @@ class App extends Component {
       let campaigns = {};
 
       for (var i in campaignsToCheck) {
-        const campaignInstance = await campaign.at(campaignsToCheck[i]);
-        const summary = await campaignInstance.getSummary.call();
-        campaigns[campaignsToCheck[i]] = {
-          address: campaignsToCheck[i],
-          minimumContribution: summary[0],
-          balance: summary[1],
-          requestsCount: summary[2],
-          contributorsCount: summary[3],
-          totalContributions: summary[4],
-          manager: summary[5],
-          infoKey: summary[6],
-          requestDaysDeadline: summary[7],
-          title: summary[8],
-          goal: summary[9],
-          category: summary[10],
-          campaignInstance
-        };
+        if (campaignsToCheck.hasOwnProperty(i)) {
+          const campaignInstance = await campaign.at(campaignsToCheck[i]);
+          const summary = await campaignInstance.getSummary.call();
+          campaigns[campaignsToCheck[i]] = {
+            address: campaignsToCheck[i],
+            minimumContribution: summary[0],
+            balance: summary[1],
+            requestsCount: summary[2],
+            contributorsCount: summary[3],
+            totalContributions: summary[4],
+            manager: summary[5],
+            infoKey: summary[6],
+            requestDaysDeadline: summary[7],
+            title: summary[8],
+            goal: summary[9],
+            category: summary[10],
+            campaignInstance
+          };
+        }
       }
       this.setState({ campaigns, loading: false });
     });

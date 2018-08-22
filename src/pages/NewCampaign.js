@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Form, Button, Input, Message } from "semantic-ui-react";
+import { Message } from "semantic-ui-react";
 import CampaignFactoryContract from "../../build/contracts/CampaignFactory.json";
-import CampaignContract from "../../build/contracts/Campaign.json";
 import getWeb3 from "../utils/getWeb3";
 import BasicInfoForm from "../components/BasicInfoForm";
 import styles from "../styles/commonStyles";
@@ -57,7 +56,7 @@ class CampaignNew extends Component {
 	};
 
 	onSubmit = async basicInfo => {
-		const { web3, campaignFactoryInstance, accounts } = this.state;
+		const { campaignFactoryInstance, accounts } = this.state;
 		this.setState({ loading: true, errorMessage: "" });
 		try {
 			await campaignFactoryInstance.createCampaign(

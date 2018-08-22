@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Icon, Grid, Button, Image, Segment } from "semantic-ui-react";
+import { Card, Grid, Button, Segment } from "semantic-ui-react";
 import getWeb3 from "../utils/getWeb3";
 import ContributeForm from "../components/ContributeForm";
 
@@ -48,9 +48,7 @@ class ShowCampaign extends Component {
 			minimumContribution,
 			requestsCount,
 			contributorsCount,
-			infoKey,
 			campaignInstance,
-			days,
 			goal,
 			title,
 			category,
@@ -60,7 +58,7 @@ class ShowCampaign extends Component {
 		const { web3, amountCurrentAccountContributed } = this.state;
 
 		const balanceEther = web3 ? web3.fromWei(balance * 1, "ether") : 0;
-		const progress = (balanceEther / goal) * 1 * 100;
+		// const progress = (balanceEther / goal) * 1 * 100;
 
 		return (
 			<div>

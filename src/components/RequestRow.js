@@ -6,7 +6,6 @@ import getWeb3 from "../utils/getWeb3";
 class RequestRow extends Component {
 	state = {
 		web3: null,
-		votedNo: false,
 		loading: false,
 		amountContributed: null,
 		votedNo: false
@@ -42,7 +41,7 @@ class RequestRow extends Component {
 		const { campaignInstance, currentAccount, id } = this.props;
 		this.setState({ loading: true });
 		try {
-			this.props.campaignInstance
+			campaignInstance
 				.voteNo(id, {
 					from: currentAccount
 				})
@@ -71,7 +70,7 @@ class RequestRow extends Component {
 		const { campaignInstance, currentAccount, id } = this.props;
 		this.setState({ loading: true });
 		try {
-			this.props.campaignInstance
+			campaignInstance
 				.finalizeRequest(id, {
 					from: currentAccount
 				})
@@ -100,7 +99,6 @@ class RequestRow extends Component {
 		const {
 			id,
 			request,
-			contributorsCount,
 			totalContributions,
 			amountCurrentAccountContributed,
 			isManager
