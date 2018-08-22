@@ -70,6 +70,10 @@ class CampaignCard extends Component {
 							? `${contributorsCount * 1} Contributors`
 							: `${contributorsCount * 1} Contributor`}
 					</span>
+					<span style={styles.floatRight}>
+						<Icon name="idea" />
+						{requestsCount * 1} Requests
+					</span>
 				</Card.Content>
 				<Card.Content extra>
 					<Button fluid secondary>

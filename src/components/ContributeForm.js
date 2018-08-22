@@ -65,10 +65,13 @@ class ContributeForm extends Component {
 						<Form.Field>
 							<label>
 								Amount to Contribute (
-								{this.props.minContribution
-									.toString()
-									.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
-								Wei Minimum)
+								{this.state.web3
+									? this.state.web3.fromWei(
+											this.props.minContribution,
+											"ether"
+									  )
+									: ""}{" "}
+								ETH Minimum)
 							</label>
 
 							<Input
