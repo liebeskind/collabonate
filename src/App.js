@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Card, Button, Segment } from "semantic-ui-react";
+import {
+  Card,
+  Button,
+  Segment,
+  Dimmer,
+  Loader,
+  Image
+} from "semantic-ui-react";
 
 import CampaignFactoryContract from "../build/contracts/CampaignFactory.json";
 import CampaignContract from "../build/contracts/Campaign.json";
@@ -29,14 +36,15 @@ class App extends Component {
       showCreateCampaign: false,
       showRequestList: false,
       showCampaign: false,
-      showCreateRequest: false
+      showCreateRequest: false,
+      currentAccount: null,
+      loading: true
     };
   }
 
   componentWillMount() {
     // Get network provider and web3 instance.
     // See utils/getWeb3 for more info.
-
     getWeb3
       .then(results => {
         this.setState({
@@ -45,6 +53,15 @@ class App extends Component {
 
         // Instantiate contract once web3 provided.
         this.instantiateContract();
+        // Get current account info
+        results.web3.eth.getAccounts((error, accounts) => {
+          this.setState({ currentAccount: accounts[0] });
+        });
+
+        // Update currentAccount any time user switches it in Metamask.
+        results.web3.currentProvider.publicConfigStore.on("update", result => {
+          this.setState({ currentAccount: result.selectedAddress });
+        });
       })
       .catch(() => {
         console.log("Error finding web3.");
@@ -85,7 +102,7 @@ class App extends Component {
           campaignInstance
         };
       }
-      this.setState({ campaigns });
+      this.setState({ campaigns, loading: false });
     });
   }
 
@@ -156,7 +173,12 @@ class App extends Component {
         <main className="container">
           <div className="pure-g">
             <div className="pure-u-1-1">
-              <h1>Donate and Collaborate on the Use of Funds</h1>
+              <h1 style={{ marginBottom: 5 }}>
+                Donate and Collaborate on the Use of Funds
+              </h1>
+              <div style={{ marginTop: 0, marginBottom: 10 }}>
+                Your account: {this.state.currentAccount}
+              </div>
 
               {showCampaign && (
                 <ShowCampaign
@@ -170,7 +192,10 @@ class App extends Component {
                 />
               )}
               {showCreateCampaign && (
-                <NewCampaign campaignCreated={this.navigateHome} />
+                <NewCampaign
+                  campaignCreated={this.navigateHome}
+                  currentAccount={this.state.currentAccount}
+                />
               )}
 
               {showRequestList && (
@@ -178,6 +203,7 @@ class App extends Component {
                   campaignInstance={campaigns[showRequestList].campaignInstance}
                   requestsCount={campaigns[showRequestList].requestsCount * 1}
                   address={campaigns[showRequestList].address}
+                  currentAccount={this.state.currentAccount}
                   manager={campaigns[showRequestList].manager}
                   createNewRequest={this.createNewRequest}
                   totalContributions={
@@ -190,6 +216,7 @@ class App extends Component {
               {showCreateRequest && (
                 <NewRequest
                   showRequestList={this.showRequestList}
+                  currentAccount={this.state.currentAccount}
                   campaignInstance={
                     campaigns[showCreateRequest].campaignInstance
                   }
@@ -214,6 +241,15 @@ class App extends Component {
                       <h3>
                         Active Campaigns ({Object.keys(campaigns).length})
                       </h3>
+                      {this.state.loading && (
+                        <Segment>
+                          <Dimmer active>
+                            <Loader content="Getting Active Campaigns from the Ethereum blockchain" />
+                          </Dimmer>
+
+                          <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
+                        </Segment>
+                      )}
                       <Card.Group>
                         {Object.keys(campaigns).map(contractInfo => {
                           return (

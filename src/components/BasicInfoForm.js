@@ -88,7 +88,18 @@ class NewBasicInfoForm extends Component {
 						}
 					/>
 				</Form.Field>
-				<Button floated="right" loading={this.props.loading} primary>
+				<Button
+					loading={this.props.loading}
+					fluid
+					primary
+					disabled={
+						!this.state.title ||
+						!this.state.goal ||
+						!this.state.category ||
+						!this.state.minimumContribution ||
+						!this.state.requestDays
+					}
+				>
 					Create Campaign
 				</Button>
 			</Form>

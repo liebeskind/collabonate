@@ -8,8 +8,8 @@ class ShowCampaign extends Component {
 		super(props);
 
 		this.state = {
-			web3: null,
-			currentAccount: null
+			web3: null
+			// currentAccount: null
 		};
 	}
 
@@ -22,7 +22,7 @@ class ShowCampaign extends Component {
 
 				// Get current account info
 				this.state.web3.eth.getAccounts(async (error, accounts) => {
-					this.setState({ currentAccount: accounts[0] });
+					// this.setState({ currentAccount: accounts[0] });
 					this.getCampaignContribution(accounts[0]);
 				});
 			})
@@ -113,7 +113,7 @@ class ShowCampaign extends Component {
 												amountCurrentAccountContributed
 											}
 											isManager={
-												this.state.currentAccount ===
+												this.props.currentAccount ===
 												manager
 											}
 										/>

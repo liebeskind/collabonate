@@ -53,6 +53,7 @@ SafeMath is imported into the Campaign contract and is used to prevent overflow 
 
 -   App integrates with Metamask using Web3.
 -   Recognizes current account and shows current account contribution amounts, current account no-votes, and differentiates between accounts that are managers of a campaign, contributors, or haven't contributed. The app also tracks how much an account has contributed and many other states of an account.
+-   Switching account via Metamask updates the UI to reflec the state/permissions of the current account. If on the Campaign page and switch to manager account, the UI becomes the manager view.
 -   All Campaign contract functions (including many variable calls) are called by the frontend via web3.
 -   The state of the UI changes on each contract state change.
 -   App is fully deployed to https://collabonate.herokuapp.com/

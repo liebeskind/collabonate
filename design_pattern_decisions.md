@@ -47,3 +47,5 @@
 -   No looping through Arrays in contracts as this can lead to massive gas usage.
 
 -   No built-in centralized censorship. There is a tradeoff between true decentralization and preventing the abuse of the platform. What's to stop an account from raising funds to do something illegal? One way to regulate this would be to use a token ecosystem. Tokens could be generated from voting, contributing and creating campaigns or by buying them on the open market. Token holders would be a governing body and could remove illegal / undesirable campaigns through a voting mechanism.
+
+-   Updates currentAccount by using results.web3.currentProvider.publicConfigStore.on("update", cb) and flow this through the entire app. Prevents a user from seeing the wrong UI when they switch accounts.
