@@ -2,17 +2,24 @@
 
 ## How to Run
 
-The CampaignFactory contract is deployed on the Rinkeby network. Find the address in deployed_addresses.txt
+The CampaignFactory contract is deployed on the Rinkeby network. Find the address in
+[deployed_addresses.txt](avoiding_common_attacks.md)
 
 You can access the live frontend here - https://collabonate.herokuapp.com/
 
-To Run on localhost you will need node (and npm) installed.
+To Run on localhost you will need Node (and npm) installed.
+
+```
 npm install
 npm run start
+```
 
 To test
+
+```
 truffle deploy
 test
+```
 
 ## Description
 
@@ -40,14 +47,22 @@ Contributors can vote against the request and the request is considered ‘denie
 
 ## Libraries Used (Via EthPM)
 
-SafeMath is imported into the Campaign contract and is used to prevent overflow on uint256 and, generally, make math operations more secure.
+SafeMath is imported into the Campaign contract and is used to prevent overflow on uint256 and, generally, make math operations more secure. See [SafeMath.sol](/installed_contracts/contracts/SafeMath.sol), which was imported using EthPM.
 
 ## UI Features
 
 -   App integrates with Metamask using Web3.
 -   Recognizes current account and shows current account contribution amounts, current account no-votes, and differentiates between accounts that are managers of a campaign, contributors, or haven't contributed. The app also tracks how much an account has contributed and many other states of an account.
 -   All Campaign contract functions (including many variable calls) are called by the frontend via web3.
--   The state of the UI changes on each blockchain transaction.
+-   The state of the UI changes on each contract state change.
 -   App is fully deployed to https://collabonate.herokuapp.com/
 -   Project is made with Truffle and all the Truffle commands work.
 -   Sign transactions using Metamask
+
+## Design Patterns
+
+See [design_pattern_decisions.md](/design_pattern_decisions.md)
+
+## Avoiding Common Attacks
+
+See [avoiding_common_attacks.md](/avoiding_common_attacks.md)
