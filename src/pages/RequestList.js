@@ -8,7 +8,8 @@ class RequestList extends Component {
 	state = {
 		currentAccount: "",
 		web3: null,
-		requests: []
+		requests: [],
+		amountCurrentAccountContributed: 0
 	};
 
 	componentWillMount() {
@@ -28,7 +29,18 @@ class RequestList extends Component {
 			});
 
 		this.getRequests(this.props.campaignInstance);
+		this.getCampaignContribution();
 	}
+
+	getCampaignContribution = async () => {
+		const contributed = await this.props.campaignInstance.getContributionAmount(
+			this.props.currentAccount
+		);
+		console.log(contributed);
+		this.setState({
+			amountCurrentAccountContributed: contributed
+		});
+	};
 
 	getRequests = async campaignInstance => {
 		const requestCount = await campaignInstance.getRequestCount.call();
@@ -69,6 +81,9 @@ class RequestList extends Component {
 					campaignInstance={campaignInstance}
 					currentAccount={this.state.currentAccount}
 					totalContributions={totalContributions}
+					amountCurrentAccountContributed={
+						this.state.amountCurrentAccountContributed
+					}
 				/>
 			);
 		});
@@ -84,6 +99,10 @@ class RequestList extends Component {
 					Back
 				</Button>
 				<h3>Requests</h3>
+				<h4>
+					Amount Current Account Contributed:{" "}
+					{this.state.amountCurrentAccountContributed}
+				</h4>
 				<CreateRequestButton
 					currentAccount={this.state.currentAccount}
 					manager={manager}

@@ -165,6 +165,7 @@ class App extends Component {
                     web3.fromWei(campaigns[showCampaign].balance, "ether") * 1
                   }
                   contractInfo={campaigns[showCampaign]}
+                  currentAccount={this.state.currentAccount}
                   navigateHome={this.navigateHome}
                 />
               )}

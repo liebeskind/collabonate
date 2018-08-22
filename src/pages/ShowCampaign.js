@@ -8,7 +8,8 @@ class ShowCampaign extends Component {
 		super(props);
 
 		this.state = {
-			web3: null
+			web3: null,
+			currentAccount: null
 		};
 	}
 
@@ -18,11 +19,27 @@ class ShowCampaign extends Component {
 				this.setState({
 					web3: results.web3
 				});
+
+				// Get current account info
+				this.state.web3.eth.getAccounts(async (error, accounts) => {
+					this.setState({ currentAccount: accounts[0] });
+				});
 			})
 			.catch(() => {
 				console.log("Error finding web3.");
 			});
+		this.getCampaignContribution();
 	}
+
+	getCampaignContribution = async () => {
+		const contributed = await this.props.contractInfo.campaignInstance.getContributionAmount(
+			this.state.currentAccount
+		);
+		console.log(contributed);
+		this.setState({
+			amountCurrentAccountContributed: contributed
+		});
+	};
 
 	render() {
 		const {

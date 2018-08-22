@@ -185,4 +185,8 @@ contract Campaign {
         return requests.length;
     }
 
+    function getContributionAmount(address contributor) public view returns(uint) {
+      return contributors[contributor];
+    }
+
 }

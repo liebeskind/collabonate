@@ -6,7 +6,8 @@ class RequestRow extends Component {
 	state = {
 		web3: null,
 		votedNo: false,
-		loading: false
+		loading: false,
+		amountContributed: null
 	};
 
 	componentWillMount() {
@@ -87,7 +88,8 @@ class RequestRow extends Component {
 			id,
 			request,
 			contributorsCount,
-			totalContributions
+			totalContributions,
+			amountCurrentAccountContributed
 		} = this.props;
 		const readyToFinalize = false;
 		// const readyToFinalize = request.approvalCount > contributorsCount / 2;
@@ -112,7 +114,13 @@ class RequestRow extends Component {
 					%
 				</Cell>
 				<Cell>
-					{request.complete ? null : ( // Should also check to see if this account is a contributor.
+					{request.complete ? (
+						<div>Request Complete</div>
+					) : request.overNolimit ? (
+						<div>Over No Limit</div> // Should also check to see if this account is a contributor.
+					) : !amountCurrentAccountContributed ? (
+						<div>Contribute to Vote</div>
+					) : (
 						<Button
 							color="green"
 							basic
@@ -124,7 +132,11 @@ class RequestRow extends Component {
 					)}
 				</Cell>
 				<Cell>
-					{request.complete ? null : (
+					{request.complete ? (
+						<div>Request Complete</div>
+					) : request.overNolimit ? (
+						<div>Over No Limit</div> // Should also check to see if this account is a contributor.
+					) : (
 						<Button
 							color="teal"
 							basic
