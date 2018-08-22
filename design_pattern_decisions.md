@@ -16,6 +16,8 @@
 
 -   Mapping of accounts that have 'voted no' against a particular request
 
+-   Manager can create requests that represent more ETH than exist in the contracts, but won't be able to actually transfer the funds until they exist in the contract.
+
 -   Having campaign contributor finalize request vs. having funds transfer automatically at the end of 5 days
 
 -   Using block.timestamp vs. block.number for estimating time elapsed in request

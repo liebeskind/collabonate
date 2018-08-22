@@ -123,10 +123,7 @@ class ShowCampaign extends Component {
 								<br />
 								<Grid.Row>
 									<Segment>
-										<h3>
-											{requestsCount * 1} requests pending
-											({balanceEther * 1} ETH balance)
-										</h3>
+										<h3>{requestsCount * 1} requests</h3>
 
 										<h4>
 											Requests can be voted against for{" "}

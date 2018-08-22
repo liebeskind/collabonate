@@ -1,4 +1,5 @@
 pragma solidity ^0.4.24;
+// Uses SafeMath library for extra security.
 import 'zeppelin/contracts/math/SafeMath.sol';
 
 /// @title Fundraising campaign where contributors vote on use of funds.

@@ -8,7 +8,8 @@ class RequestRow extends Component {
 		web3: null,
 		votedNo: false,
 		loading: false,
-		amountContributed: null
+		amountContributed: null,
+		votedNo: false
 	};
 
 	componentWillMount() {
@@ -24,7 +25,16 @@ class RequestRow extends Component {
 			.catch(() => {
 				console.log("Error finding web3.");
 			});
+
+		this.getNoVotes();
 	}
+
+	getNoVotes = async () => {
+		const votedNo = await this.props.campaignInstance.getNoVotes(
+			this.props.address
+		);
+		this.setState({ votedNo });
+	};
 
 	onVoteNo = async () => {
 		// // Will be async because will have to reach out to campaign and attempt to reference a given request and approve it.
@@ -111,20 +121,23 @@ class RequestRow extends Component {
 				<Cell>{moment(request.timestamp).format("MMM D, YYYY")}</Cell>
 				<Cell>{request.recipient}</Cell>
 				<Cell>
-					{(
-						(request.noVoteContributionTotal / totalContributions) *
-						100
-					).toFixed(0)}
+					{!(totalContributions * 1)
+						? 0
+						: (
+								(request.noVoteContributionTotal /
+									totalContributions) *
+								100
+						  ).toFixed(0)}
 					%
 				</Cell>
 				<Cell>
-					{request.complete ? (
-						<div>Request Complete</div>
-					) : request.overNoLimit ? (
+					{request.overNoLimit ? (
 						<div>Over No Limit</div> // Should also check to see if this account is a contributor.
-					) : // ) : request.noVotes[this.props.currentAccount] ? ( // Need to add getter to the contract
-					// 	<div>Already Voted No</div> // Should also check to see if this account is a contributor.
-					isManager ? (
+					) : request.complete ? (
+						<div>Request Complete</div>
+					) : request.noVotes[this.props.currentAccount] ? ( // Need to add getter to the contract
+						<div>Already Voted No</div> // Should also check to see if this account is a contributor.
+					) : isManager ? (
 						<div>Managers Can't Vote</div>
 					) : !amountCurrentAccountContributed ? (
 						<div>Contribute to Vote</div>
@@ -140,10 +153,10 @@ class RequestRow extends Component {
 					)}
 				</Cell>
 				<Cell>
-					{request.complete ? (
+					{request.overNoLimit ? (
+						<div>Over No Limit</div>
+					) : request.complete ? (
 						<div>Request Complete</div>
-					) : request.overNolimit ? (
-						<div>Over No Limit</div> // Should also check to see if this account is a contributor.
 					) : !isManager ? (
 						<div>Only Manager Can Finalize</div> // Should also check to see if this account is a contributor.
 					) : (
