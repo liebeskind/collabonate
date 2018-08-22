@@ -202,21 +202,67 @@ contract("Campaign", async accounts => {
 			requestAmount,
 			"Request value should equal request amount."
 		);
+
+		assert.equal(complete, false, "Should not be complete.");
+		assert.equal(overNoLimit, false, "Should not be over no vote.");
 	});
 
 	// Test whether accounts that have contributed can vote against a request.
 	// No vote contribution total should equal the amount the voting account contributed.
+
+	// Finalize request
+	it("...should be able to finalize a request.", async () => {
+		const campaignFactoryInstance = await CampaignFactory.deployed();
+		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
+		const campaign = await Campaign.at(storedData[0]);
+
+		// First parameter is request index account is voting against.  In this case, voting against request #1.
+		await campaign.finalizeRequest(0, {
+			from: accounts[0]
+		});
+
+		const request = await campaign.getRequest(0);
+		const complete = request[3];
+
+		assert.equal(complete, true, "Should be able to complete request.");
+	});
+
+	it("...should be able to create a second request.", async () => {
+		const campaignFactoryInstance = await CampaignFactory.deployed();
+		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
+		const campaign = await Campaign.at(storedData[0]);
+		const requestAmount = 10;
+
+		await campaign.createRequest(
+			"Example description",
+			requestAmount,
+			accounts[2],
+			"Database Key",
+			{
+				from: accounts[0]
+			}
+		);
+
+		const requestCount = await campaign.getRequestCount.call();
+
+		assert.equal(
+			requestCount * 1,
+			2,
+			"Should have been able to create a second request."
+		);
+	});
+
 	it("...should be able to vote against request from account that contributed.", async () => {
 		const campaignFactoryInstance = await CampaignFactory.deployed();
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 		const campaign = await Campaign.at(storedData[0]);
 
 		// First parameter is request index account is voting against.  In this case, voting against request #1.
-		await campaign.voteNo(0, {
+		await campaign.voteNo(1, {
 			from: accounts[1]
 		});
 
-		const request = await campaign.getRequest(0);
+		const request = await campaign.getRequest(1);
 		const noVoteContributionTotal = request[6];
 
 		assert.equal(
@@ -226,38 +272,44 @@ contract("Campaign", async accounts => {
 		);
 	});
 
-	// Finalize request
-	it("...should be able to finalize a request.", async () => {
+	it("...should be over no vote limit.", async () => {
+		const campaignFactoryInstance = await CampaignFactory.deployed();
+		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
+		const campaign = await Campaign.at(storedData[0]);
+		const totalContributions = await campaign.totalContributions.call();
+
+		const request = await campaign.getRequest(1);
+		const complete = request[3];
+		const overNoLimit = request[4];
+		const noVoteContributionTotal = request[6];
+
+		assert.isAtLeast(
+			noVoteContributionTotal / totalContributions,
+			0.15,
+			"No Vote contributions / total contributions should be greater than 0.15."
+		);
+
+		assert.equal(overNoLimit, true, "Should be over no vote limit.");
+		assert.equal(complete, true, "Should be complete.");
+	});
+
+	it("...should not let manager finalize request that is over the no vote limit.", async () => {
 		const campaignFactoryInstance = await CampaignFactory.deployed();
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 		const campaign = await Campaign.at(storedData[0]);
 
-		const requestAmount = 5;
-		const accountToReceive = accounts[2];
-
-		// Creating second request where no contributing accounts have voted against the request.
-		await campaign.createRequest(
-			"Example description",
-			requestAmount,
-			accountToReceive,
-			"Database Key",
-			{
+		// This should fail and throw an error, which we 'catch'.
+		campaign
+			.finalizeRequest(0, {
 				from: accounts[0]
-			}
-		);
-
-		// First parameter is request index account is voting against.  In this case, voting against request #1.
-		await campaign.finalizeRequest(1, {
-			from: accounts[0]
-		});
-
-		const endingAccountBalance = await web3
-			.fromWei(web3.eth.getBalance(accountToReceive), "ether")
-			.toNumber();
-
-		const request = await campaign.getRequest(1);
-		const complete = request[3];
-
-		assert.equal(complete, true, "Should be able to complete request.");
+			})
+			.then(result => {})
+			.catch(error => {
+				assert.include(
+					error.message,
+					"VM Exception",
+					"Should throw error if manager tries to finalize request over the no vote limit"
+				);
+			});
 	});
 });

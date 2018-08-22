@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import moment from "moment";
 import { Table, Button } from "semantic-ui-react";
 import getWeb3 from "../utils/getWeb3";
 
@@ -39,6 +40,7 @@ class RequestRow extends Component {
 						loading: false,
 						votedNo: true
 					});
+					this.props.showCampaign();
 				})
 				.catch(err => {
 					this.setState({
@@ -89,7 +91,8 @@ class RequestRow extends Component {
 			request,
 			contributorsCount,
 			totalContributions,
-			amountCurrentAccountContributed
+			amountCurrentAccountContributed,
+			isManager
 		} = this.props;
 		const readyToFinalize = false;
 		// const readyToFinalize = request.approvalCount > contributorsCount / 2;
@@ -103,8 +106,9 @@ class RequestRow extends Component {
 				<Cell>{id}</Cell>
 				<Cell>{request.description}</Cell>
 				<Cell>
-					{web3 ? web3.fromWei(request.value, "ether") : "NA"}
+					{web3 ? web3.fromWei(request.value, "ether") : "NA"} ETH
 				</Cell>
+				<Cell>{moment(request.timestamp).format("MMM D, YYYY")}</Cell>
 				<Cell>{request.recipient}</Cell>
 				<Cell>
 					{(
@@ -116,8 +120,12 @@ class RequestRow extends Component {
 				<Cell>
 					{request.complete ? (
 						<div>Request Complete</div>
-					) : request.overNolimit ? (
+					) : request.overNoLimit ? (
 						<div>Over No Limit</div> // Should also check to see if this account is a contributor.
+					) : // ) : request.noVotes[this.props.currentAccount] ? ( // Need to add getter to the contract
+					// 	<div>Already Voted No</div> // Should also check to see if this account is a contributor.
+					isManager ? (
+						<div>Managers Can't Vote</div>
 					) : !amountCurrentAccountContributed ? (
 						<div>Contribute to Vote</div>
 					) : (
@@ -136,6 +144,8 @@ class RequestRow extends Component {
 						<div>Request Complete</div>
 					) : request.overNolimit ? (
 						<div>Over No Limit</div> // Should also check to see if this account is a contributor.
+					) : !isManager ? (
+						<div>Only Manager Can Finalize</div> // Should also check to see if this account is a contributor.
 					) : (
 						<Button
 							color="teal"

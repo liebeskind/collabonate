@@ -54,54 +54,64 @@ class ContributeForm extends Component {
 
 	render() {
 		return (
-			<Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
-				<Form.Field>
-					<label>
-						Amount to Contribute (
-						{this.props.minContribution
-							.toString()
-							.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
-						Wei Minimum)
-					</label>
+			<div>
+				{this.props.isManager ? (
+					<h3>Your account manages this campaign</h3>
+				) : (
+					<Form
+						onSubmit={this.onSubmit}
+						error={!!this.state.errorMessage}
+					>
+						<Form.Field>
+							<label>
+								Amount to Contribute (
+								{this.props.minContribution
+									.toString()
+									.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+								Wei Minimum)
+							</label>
 
-					<Input
-						value={this.state.value}
-						onChange={event =>
-							this.setState({ value: event.target.value })
-						}
-						label="ETH"
-						labelPosition="right"
-					/>
-					<label>
-						{this.props.amountCurrentAccountContributed
-							? `Your account has already contributed ${this.state.web3.fromWei(
-									this.props.amountCurrentAccountContributed,
-									"ether"
-							  )} ETH`
-							: "Your account has not yet contributed"}
-					</label>
-				</Form.Field>
-				<Message
-					header="Adding to Ethereum Blockchain"
-					hidden={!this.state.loading}
-					content={
-						"We've submitted your contribution to the Ethereum blockchain!  Miners are solving the current block hash, which should take ~20 seconds. Ain't technology grand?!"
-					}
-				/>
-				<Message
-					error
-					header="Oops"
-					content={this.state.errorMessage}
-				/>
-				<Button
-					type="submit"
-					fluid
-					primary
-					loading={this.state.loading}
-				>
-					Contribute!
-				</Button>
-			</Form>
+							<Input
+								value={this.state.value}
+								onChange={event =>
+									this.setState({ value: event.target.value })
+								}
+								label="ETH"
+								labelPosition="right"
+							/>
+							<label>
+								{this.props.amountCurrentAccountContributed
+									? `Your account has already contributed ${this.state.web3.fromWei(
+											this.props
+												.amountCurrentAccountContributed,
+											"ether"
+									  )} ETH`
+									: "Your account has not yet contributed"}
+							</label>
+						</Form.Field>
+						<Message
+							header="Adding to Ethereum Blockchain"
+							hidden={!this.state.loading}
+							content={
+								"We've submitted your contribution to the Ethereum blockchain!  Miners are solving the current block hash, which should take ~20 seconds. Ain't technology grand?!"
+							}
+						/>
+						<Message
+							error
+							header="Oops"
+							content={this.state.errorMessage}
+						/>
+						<Button
+							type="submit"
+							fluid
+							primary
+							loading={this.state.loading}
+						>
+							Contribute!
+						</Button>
+					</Form>
+				)}
+			</div>
 		);
 	}
 }

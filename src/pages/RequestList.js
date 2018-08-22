@@ -59,7 +59,7 @@ class RequestList extends Component {
 			});
 		}
 
-		this.setState({ requests });
+		this.setState({ requests, requestCount: requestCount * 1 });
 	};
 
 	renderRows() {
@@ -67,7 +67,8 @@ class RequestList extends Component {
 			address,
 			contributorsCount,
 			campaignInstance,
-			totalContributions
+			totalContributions,
+			manager
 		} = this.props;
 		return this.state.requests.map((request, index) => {
 			return (
@@ -80,6 +81,8 @@ class RequestList extends Component {
 					campaignInstance={campaignInstance}
 					currentAccount={this.state.currentAccount}
 					totalContributions={totalContributions}
+					isManager={manager === this.state.currentAccount}
+					showCampaign={() => this.props.showCampaign(address)}
 					amountCurrentAccountContributed={
 						this.state.amountCurrentAccountContributed
 					}
@@ -90,8 +93,13 @@ class RequestList extends Component {
 
 	render() {
 		const { Header, Row, HeaderCell, Body } = Table;
-		const { manager, address, requestCount } = this.props;
-		const { web3, amountCurrentAccountContributed } = this.state;
+		const { manager, address } = this.props;
+		const {
+			web3,
+			amountCurrentAccountContributed,
+			currentAccount,
+			requestCount
+		} = this.state;
 
 		return (
 			<div>
@@ -99,18 +107,18 @@ class RequestList extends Component {
 					Back
 				</Button>
 				<h3>Requests</h3>
-				{manager ? (
+				{manager === currentAccount ? (
 					<h4>Your account is the manager of this campaign</h4>
 				) : (
 					<h4>
-						Amount your account has contributed to this campaign:{" "}
+						Your account has contributed{" "}
 						{web3
 							? web3.fromWei(
 									amountCurrentAccountContributed,
 									"ether"
 							  )
 							: "Loading"}{" "}
-						ETH
+						ETH to this campaign
 					</h4>
 				)}
 				<CreateRequestButton
@@ -125,7 +133,8 @@ class RequestList extends Component {
 							<HeaderCell>ID</HeaderCell>
 							<HeaderCell>Description</HeaderCell>
 							<HeaderCell>Amount</HeaderCell>
-							<HeaderCell>Recipient</HeaderCell>
+							<HeaderCell>Date Created</HeaderCell>
+							<HeaderCell>Recipient Address</HeaderCell>
 							<HeaderCell>% No Vote</HeaderCell>
 							<HeaderCell>Vote No</HeaderCell>
 							<HeaderCell>Finalize</HeaderCell>
@@ -133,7 +142,7 @@ class RequestList extends Component {
 					</Header>
 					<Body>{this.renderRows()}</Body>
 				</Table>
-				<div>Found {requestCount} requests.</div>
+				<div>Found {requestCount * 1} requests.</div>
 			</div>
 		);
 	}

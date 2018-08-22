@@ -112,6 +112,10 @@ class ShowCampaign extends Component {
 											amountCurrentAccountContributed={
 												amountCurrentAccountContributed
 											}
+											isManager={
+												this.state.currentAccount ===
+												manager
+											}
 										/>
 										<br />
 									</Segment>

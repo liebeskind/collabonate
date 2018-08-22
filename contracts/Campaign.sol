@@ -1,31 +1,34 @@
 pragma solidity ^0.4.24;
+import 'zeppelin/contracts/math/SafeMath.sol';
 
 /// @title Fundraising campaign where contributors vote on use of funds.
 contract Campaign {
+    using SafeMath for uint256;
+
     address public manager; // Owner/creator of the campaign.
-    uint public minimumContribution; // Minimum amount of wei contributor must contribute to the campaign.
+    uint256 public minimumContribution; // Minimum amount of wei contributor must contribute to the campaign.
     string public infoKey; // Database/IPFS key (not 100% sure how going to use this yet).
-    mapping(address => uint) public contributors; // Address of each approver and how much wei/eth each has contributed.
+    mapping(address => uint256) public contributors; // Address of each approver and how much wei/eth each has contributed.
     address[] public contributorAddresses;
-    uint public totalContributions; // Track total contributions, which will differ from this.balance if funds are distributed.
-    uint public contributorsCount; // How many contributors are there.  Less important than totalContributions, but still interesting.
-    uint public requestDaysDeadline; // Set by the manager when first creating the campaign.  It's known to contributors when they contribute.
+    uint256 public totalContributions; // Track total contributions, which will differ from this.balance if funds are distributed.
+    uint256 public contributorsCount; // How many contributors are there.  Less important than totalContributions, but still interesting.
+    uint256 public requestDaysDeadline; // Set by the manager when first creating the campaign.  It's known to contributors when they contribute.
     string public title; // Set by the manager when first creating the campaign.
-    uint public goal; // Set by the manager when first creating the campaign.
+    uint256 public goal; // Set by the manager when first creating the campaign.
     string public category; // Set by the manager when first creating the campaign.
     bool private stopped = false; // Circuit breaker
 
     // Requests are considered approved if complete === true && overNoLimit === false.  Denied if overNoLimit === true.
     struct Request {
         string description; // Description of the request.  This cannot be changed later, which prevents bait-and-switch.
-        uint value; // Quantity of funds requested for distribution.
+        uint256 value; // Quantity of funds requested for distribution.
         address recipient; // Address of intended recipient of the funds.
         bool complete; // Whether this request is complete.
         bool overNoLimit; // Are there no votes from addresses accounting for >= 15% of the total contributions?
         string databaseKey; // Location of other request-specific assets like images, videos, etc.
-        uint noVoteContributionTotal; // Sum of no-votes.  Request is denied if noVoteContributionTotal is ever >= 15% of totalContributions.
+        uint256 noVoteContributionTotal; // Sum of no-votes.  Request is denied if noVoteContributionTotal is ever >= 15% of totalContributions.
         mapping(address => bool) noVotes; // Which contributors have voted against a request.  Can't vote against a request more than once per address.
-    	  uint createdTimestamp; // Used to calculate the cutoff point where contributors can no longer vote no.
+    	  uint256 createdTimestamp; // Used to calculate the cutoff point where contributors can no longer vote no.
     }
     
     Request[] public requests; // Array of requests.
@@ -50,7 +53,7 @@ contract Campaign {
       * @param goalInput is set by the manager when first creating the campaign.  This is the funding goal for the campaign.
 	    * @param categoryInput is set by the manager when first creating the campaign.
     */
-    constructor(uint minimum, address creator, string databaseKey, uint requestDays, string titleInput, uint goalInput, string categoryInput) public {
+    constructor(uint256 minimum, address creator, string databaseKey, uint256 requestDays, string titleInput, uint256 goalInput, string categoryInput) public {
         manager = creator;
         minimumContribution = minimum;
         infoKey = databaseKey;
@@ -71,7 +74,7 @@ contract Campaign {
       * @dev Allows contribution to the campaign.  Campaign manager can stop this functionality in an emergency.
     */    
     function contribute() public payable {
-        uint amount = msg.value;
+        uint256 amount = msg.value;
         require(msg.value >= minimumContribution);
        
         contributors[msg.sender] += amount; // Tracks how much each 'approver' has contributed.
@@ -90,7 +93,7 @@ contract Campaign {
       * @param recipient address the funds will automatically be sent to if the request is approved.
       * @param databaseKey for IPFS or other database containing request assets (like images/videos/etc).
     */
-    function createRequest(string description, uint value, address recipient, string databaseKey) public restricted {
+    function createRequest(string description, uint256 value, address recipient, string databaseKey) public restricted {
         // Initialized with memory keyword because don't need to store this beyond this function.
         // Push newRequest into requests array, where it will be stored long-term.
         Request memory newRequest = Request({ 
@@ -115,7 +118,7 @@ contract Campaign {
       *	@dev Requests will be denied if this no vote pushes it over the 15% limit.
       * @param index of the particular request where contributor is voting 'no'.
     */
-    function voteNo(uint index) public {
+    function voteNo(uint256 index) public {
         Request storage request = requests[index]; // Use storage keyword because we want to change the request's state.
         
         require(contributors[msg.sender] > 0); // Check to see if the sender is a contributor to the campaign.
@@ -125,10 +128,12 @@ contract Campaign {
         request.noVotes[msg.sender] = true; // Prevents contributor from voting more than once.
         
         // Increase the no vote contribution total by the amount of wei/eth that the sender address has contributed.
+        // If contribute more money after have already voted no, it won't count towards no votes on this request,
+        // but it will increase the total contributions, decreasing the % no vote.
         request.noVoteContributionTotal += contributors[msg.sender];
 
         // Reject the request if this no vote pushes it over the limit
-        if (100*(request.noVoteContributionTotal / totalContributions) >= 15) {
+        if ((SafeMath.mul(request.noVoteContributionTotal, 100)).div(totalContributions) >= 15) {
         	request.overNoLimit = true;
         	request.complete = true;
         }
@@ -139,7 +144,7 @@ contract Campaign {
       * @dev can't finalize request if it's not yet past the request days deadline.
       * @param index of the particular request.
     */
-    function finalizeRequest(uint index) public restricted {
+    function finalizeRequest(uint256 index) public restricted {
         Request storage request = requests[index]; // Use storage keyword because we want to change the request's state.
         
         require(!request.overNoLimit);
@@ -155,7 +160,7 @@ contract Campaign {
       * @dev Return request at index.  Restricted, so only manager can access
       * @param index of the particular request to return.
     */
-    function getRequest(uint index) restricted public view returns(string, uint, address, bool, bool, string, uint, uint) {
+    function getRequest(uint256 index) restricted public view returns(string, uint256, address, bool, bool, string, uint256, uint256) {
         Request memory request = requests[index];  // Use memory so not changing state.
         return (request.description, request.value, request.recipient, request.complete, request.overNoLimit, request.databaseKey, request.noVoteContributionTotal, request.createdTimestamp);
     }
@@ -164,7 +169,7 @@ contract Campaign {
       * @dev Returns a summary of the campaign
     */
     function getSummary() public view returns(
-        uint, uint, uint, uint, uint, address, string, uint, string, uint, string
+        uint256, uint256, uint256, uint256, uint256, address, string, uint256, string, uint256, string
     ) { // Not changing in data, so 'view'
         return (
             minimumContribution,
@@ -181,11 +186,11 @@ contract Campaign {
         );
     }
 
-    function getRequestCount() public view returns(uint) {
+    function getRequestCount() public view returns(uint256) {
         return requests.length;
     }
 
-    function getContributionAmount(address contributor) public view returns(uint) {
+    function getContributionAmount(address contributor) public view returns(uint256) {
       return contributors[contributor];
     }
 
