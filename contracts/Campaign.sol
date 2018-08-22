@@ -186,15 +186,26 @@ contract Campaign {
             category
         );
     }
-
+    /**
+      * @dev Returns the number of requests.
+    */
     function getRequestCount() public view returns(uint256) {
         return requests.length;
     }
 
+    /**
+      * @dev Gets the amount of wei each contributor has sent to the campaign.
+      * @param contributor is the address of the contributor account.
+    */
     function getContributionAmount(address contributor) public view returns(uint256) {
       return contributors[contributor];
     }
 
+    /**
+      * @dev Returns a bool of whether a contributor account has voted no against a particular request
+      * @param index of the request
+      * @param contributor address
+    */
     function getRequestNoVotes(uint256 index, address contributor) public view returns(bool) {
         Request request = requests[index];  // Use memory so not changing state.
         return request.noVotes[contributor];

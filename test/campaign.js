@@ -5,15 +5,19 @@ var Campaign = artifacts.require("./Campaign.sol");
 const minimumContribution = 1000;
 
 contract("Campaign", async accounts => {
+	let campaignFactoryInstance;
+
+	beforeEach("setup for each test", async () => {
+		campaignFactoryInstance = await CampaignFactory.deployed();
+	});
+
 	// Test to see whether campaign factory deploys.
 	it("...should deploy Campaign Factory instance.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		assert.ok(campaignFactoryInstance, "Did not deploy Campaign Factory.");
 	});
 
 	// Test to see whether campaign factory can deploy a campaign.
 	it("...should deploy one campaign.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		await campaignFactoryInstance.createCampaign(
 			minimumContribution,
 			"TestKey",
@@ -31,7 +35,6 @@ contract("Campaign", async accounts => {
 
 	// Check that campaign factory deploys a second campaign by looking at the 2nd spot in the deployedCampaigns array.
 	it("...should deploy a second campaign.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		// Create second campaign
 		await campaignFactoryInstance.createCampaign(
 			minimumContribution,
@@ -50,7 +53,6 @@ contract("Campaign", async accounts => {
 
 	// Calling getDeployedCampaigns should return an array of addresses.  Each address should be of type 'string'.
 	it("...should have deployed contract addresses of type string.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 
 		assert.equal(
@@ -62,7 +64,6 @@ contract("Campaign", async accounts => {
 
 	// Test to see whether can access campaign instance that was created by Campaign Factory at deployed address.
 	it("...should be able to access Campaign instance deployed by Campaign Factory.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 
 		// Get the first deployed campaign.
@@ -73,7 +74,6 @@ contract("Campaign", async accounts => {
 	// Important to test that the manager address equals accounts[0] rather than the Campaign Factory deployed address.
 	// msg.sender at time Campaign is created will equal the Campaign Factory deployed address.
 	it("...should have manager address equal to current account.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 		const campaign = await Campaign.at(storedData[0]);
 		const managerAddress = await campaign.manager.call();
@@ -89,7 +89,6 @@ contract("Campaign", async accounts => {
 	// Then check that total contributions increased by amount contributed.
 	// Then check that there is a total of 1 contributor
 	it("...should be able to contribute to a campaign from second account.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 		const campaign = await Campaign.at(storedData[0]);
 
@@ -117,7 +116,6 @@ contract("Campaign", async accounts => {
 	// Check that contributor count doesn't increase from 1 if same account contributes a second time.
 	// However, totalContributions should increase by the amount of the contribution.
 	it("...shouldn't increase contributor count if same account contributes again.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 		const campaign = await Campaign.at(storedData[0]);
 
@@ -142,9 +140,8 @@ contract("Campaign", async accounts => {
 		);
 	});
 
-	// Check that contributor count increase to 2 if another account contributes.
+	// Check that contributor count increases to 2 if another account contributes.
 	it("...should increase contributor count if another account contributes.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 		const campaign = await Campaign.at(storedData[0]);
 
@@ -164,7 +161,6 @@ contract("Campaign", async accounts => {
 
 	// Test whether request can be created and whether the requests can be retrieved.
 	it("...should be able to create a request from the manager account and set recipient to third account.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 		const campaign = await Campaign.at(storedData[0]);
 		const requestAmount = 10;
@@ -180,6 +176,7 @@ contract("Campaign", async accounts => {
 		);
 
 		const request = await campaign.getRequest(0);
+		// Not using all of these in this test, but just listing here for reference.
 		const description = request[0];
 		const value = request[1];
 		const recipient = request[2];
@@ -207,12 +204,8 @@ contract("Campaign", async accounts => {
 		assert.equal(overNoLimit, false, "Should not be over no vote.");
 	});
 
-	// Test whether accounts that have contributed can vote against a request.
-	// No vote contribution total should equal the amount the voting account contributed.
-
-	// Finalize request
+	// Manager should be able to finalize request after the Request Timeline period.
 	it("...should be able to finalize a request.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 		const campaign = await Campaign.at(storedData[0]);
 
@@ -227,8 +220,8 @@ contract("Campaign", async accounts => {
 		assert.equal(complete, true, "Should be able to complete request.");
 	});
 
+	// Manager should be able to create another request.
 	it("...should be able to create a second request.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 		const campaign = await Campaign.at(storedData[0]);
 		const requestAmount = 10;
@@ -252,8 +245,9 @@ contract("Campaign", async accounts => {
 		);
 	});
 
+	// Test whether accounts that have contributed can vote against a request.
+	// No vote contribution total should equal the amount the voting account contributed.
 	it("...should be able to vote against request from account that contributed.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 		const campaign = await Campaign.at(storedData[0]);
 
@@ -272,8 +266,9 @@ contract("Campaign", async accounts => {
 		);
 	});
 
+	// Since account 1 voted no and it contributed more than 15% of the total contribution, the request should
+	// now be over the no limit.  This sets the request.overNoLimit flag to true.
 	it("...should be over no vote limit.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 		const campaign = await Campaign.at(storedData[0]);
 		const totalContributions = await campaign.totalContributions.call();
@@ -293,8 +288,8 @@ contract("Campaign", async accounts => {
 		assert.equal(complete, true, "Should be complete.");
 	});
 
+	// Manager should not be able to finalize request and send ETH if the request.overNoLimit property is true.
 	it("...should not let manager finalize request that is over the no vote limit.", async () => {
-		const campaignFactoryInstance = await CampaignFactory.deployed();
 		const storedData = await campaignFactoryInstance.getDeployedCampaigns.call();
 		const campaign = await Campaign.at(storedData[0]);
 
