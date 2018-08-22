@@ -192,10 +192,7 @@ class App extends Component {
                 />
               )}
               {showCreateCampaign && (
-                <NewCampaign
-                  campaignCreated={this.navigateHome}
-                  currentAccount={this.state.currentAccount}
-                />
+                <NewCampaign campaignCreated={this.navigateHome} />
               )}
 
               {showRequestList && (
