@@ -3,7 +3,7 @@
 ## How to Run
 
 The CampaignFactory contract is deployed on the Rinkeby network. Find the address in
-[deployed_addresses.txt](avoiding_common_attacks.md)
+[deployed_addresses.txt](deployed_addresses.txt)
 
 You can access the live frontend here - https://collabonate.herokuapp.com/
 
@@ -47,7 +47,7 @@ Contributors can vote against the request and the request is considered ‘denie
 
 ## Libraries Used (Via EthPM)
 
-SafeMath is imported into the Campaign contract and is used to prevent overflow on uint256 and, generally, make math operations more secure. See [SafeMath.sol](/installed_contracts/contracts/SafeMath.sol), which was imported using EthPM.
+SafeMath is imported into the Campaign contract and is used to prevent overflow on uint256 and, generally, make math operations more secure. See [SafeMath.sol](/installed_contracts/zeppelin/contracts/math/SafeMath.sol), which was imported using EthPM.
 
 ## UI Features
 
